@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ event.name }} | B'ELITEZ 2K26{% endblock %}
+
+{% block content %}
+<section class="detailHero">
+    <div class="brandHierarchy heroHierarchy">
+        <div class="collegeName">MAHENDRA COLLEGE OF ENGINEERING</div>
+        <div class="departmentName">DEPARTMENT OF BIOMEDICAL ENGINEERING</div>
+        <div class="symposiumName">B'ELIEZ <span>2K26</span></div>
+    </div>
+
+    <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical Engineering Logo">
+
+    <a class="backLink" href="{{ url_for('events') }}">← Back to Events</a>
+
+    <div class="bigIcon">{{ event.icon }}</div>
+    <small>{{ event.category }}</small>
+    <h1>{{ event.name }}</h1>
+    <p>{{ event.short }}</p>
+
+    <div class="detailActions">
+        <a class="btn" href="{{ url_for('register') }}">Register for Event →</a>
+        <a class="btn ghost" href="#rules">View Rules ↓</a>
+    </div>
+</section>
+
+<section class="detail" id="rules">
+    <article>
+        <small>EVENT INFORMATION</small>
+        <h2>Rules & Guidelines</h2>
+
+        <ul>
+            {% for r in event.rules %}
+            <li>✓ {{ r }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="detailNote">
+            <strong>How to register</strong>
+            <p>
+                Read the event rules above, return to the registration page,
+                select this event and complete your participant details.
+            </p>
+            <a class="btn" href="{{ url_for('register') }}">Explore Registration →</a>
+        </div>
+    </article>
+
+    <aside>
+        <img src="{{ url_for('static', filename='images/biomedical-crest.svg') }}" alt="Biomedical crest">
+        <small>{{ event.category }}</small>
+        <h3>{{ event.name }}</h3>
+        <p>Explore the complete event details before registering.</p>
+        <a class="btn" href="{{ url_for('register') }}">Register Now →</a>
+    </aside>
+</section>
+{% endblock %}

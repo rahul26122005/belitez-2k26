@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% block title %}B'ELITEZ 2K26 | Biomedical Symposium{% endblock %}{% block content %}<section
+    class="symHero">
+    <div class="grid"></div>
+    <div class="symInner">
+        <div class="brandHierarchy symHierarchy">
+            <div class="collegeName">MAHENDRA COLLEGE OF ENGINEERING</div>
+            <div class="departmentName">DEPARTMENT OF BIOMEDICAL ENGINEERING</div>
+            <div class="symposiumName">B'ELIEZ <span>2K26</span></div>
+        </div>
+        <div class="present"><img src="{{url_for('static',filename='images/biomedical-logo.svg')}}"> <span>MAHENDRA
+                COLLEGE OF ENGINEERING<br><b>DEPARTMENT OF BIOMEDICAL ENGINEERING</b></span></div>
+        <small>PRESENTS</small>
+        <h1>B'<em>ELITEZ</em></h1>
+        <div class="year">2K26</div>
+        <p>A dynamic biomedical symposium for ideas, innovation, competition, creativity and collaboration.</p>
+        <div class="actions"><a class="btn" href="{{url_for('register')}}">Register Now →</a><a class="btn ghost"
+                href="{{url_for('events')}}">Explore Events</a></div>
+        <div class="quick">
+            <div>🧬<b>Technical</b><small>Innovate & present</small></div>
+            <div>⚡<b>Non-Technical</b><small>Compete & connect</small></div>
+            <div>🛠️<b>Workshop</b><small>Learn hands-on</small></div>
+        </div>
+    </div>
+    <div class="dna">🧬</div>
+</section>
+<section class="section">
+    <div class="heading">
+        <div><small>COMPETE • CREATE • CONNECT</small>
+            <h2>Symposium Events</h2>
+        </div><a href="{{url_for('events')}}">View all →</a>
+    </div>
+    <div class="cards">{% for e in events %}<a class="card" href="{{url_for('detail',slug=e.slug)}}">
+            <div class="top"><span>{{e.icon}}</span><small>{{"%02d"|format(loop.index)}}</small></div>
+            <label>{{e.category}}</label>
+            <h3>{{e.name}}</h3>
+            <p>{{e.short}}</p><b>Explore Event →</b>
+        </a>{% endfor %}</div>
+</section>
+<section class="notice"><img src="{{url_for('static',filename='images/biomedical-crest.svg')}}">
+    <div><small>IMPORTANT NOTICE</small>
+        <h2>Accommodation will not be provided.</h2>
+        <p>Please make your travel and stay arrangements in advance.</p>
+    </div>
+</section>{% endblock %}

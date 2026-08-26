@@ -1,0 +1,1367 @@
+* {
+    box-sizing: border-box
+}
+
+html {
+    scroll-behavior: smooth
+}
+
+body {
+    margin: 0;
+    background: #f6f9fc;
+    color: #08101f;
+    font-family: Inter, Arial, sans-serif;
+    overflow-x: hidden
+}
+
+a {
+    text-decoration: none;
+    color: inherit
+}
+
+button,
+input {
+    font: inherit
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    background: rgba(7, 16, 29, .96);
+    backdrop-filter: blur(15px);
+    border-top: 4px solid #12b8a6
+}
+
+.nav {
+    min-height: 74px;
+    max-width: 1250px;
+    margin: auto;
+    padding: 10px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff
+}
+
+.brand img {
+    width: 43px
+}
+
+.brand b {
+    display: block;
+    font: 700 11px "Space Grotesk"
+}
+
+.brand small {
+    display: block;
+    color: #9daabd;
+    font-size: 7px;
+    letter-spacing: 1px;
+    margin-top: 4px
+}
+
+.nav button {
+    display: none;
+    background: none;
+    border: 0;
+    color: #fff;
+    font-size: 27px
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+    color: #c6d1df;
+    font-size: 12px;
+    font-weight: 700;
+    align-items: center
+}
+
+nav a:hover {
+    color: #fff
+}
+
+.navbtn,
+.btn {
+    background: linear-gradient(135deg, #12b8a6, #1acbb8);
+    color: #031917 !important;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 900
+}
+
+.grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(#fff1 1px, transparent 1px), linear-gradient(90deg, #fff1 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .5
+}
+
+.deptHero,
+.symHero {
+    position: relative;
+    min-height: calc(100vh - 78px);
+    display: flex;
+    align-items: center;
+    background: radial-gradient(circle at 78% 35%, #5267ff33, transparent 25%), radial-gradient(circle at 40% 80%, #12b8a622, transparent 30%), #07101d;
+    color: #fff
+}
+
+.heroInner,
+.symInner {
+    max-width: 1180px;
+    width: 100%;
+    margin: auto;
+    padding: 70px 22px;
+    position: relative;
+    z-index: 2
+}
+
+.heroInner {
+    display: flex;
+    align-items: center;
+    gap: 45px
+}
+
+.crest {
+    width: min(260px, 30vw)
+}
+
+.heroInner small,
+.symInner small,
+.pageHero small,
+.formHero small,
+.detailHero small,
+.admin>small {
+    letter-spacing: 2px;
+    color: #12b8a6;
+    font-size: 10px;
+    font-weight: 900
+}
+
+.deptHero h1 {
+    font: 700 clamp(55px, 8vw, 105px)/.88 "Space Grotesk";
+    letter-spacing: -5px;
+    margin: 17px 0
+}
+
+.deptHero h1 em,
+.symHero h1 em {
+    font-style: normal;
+    color: #12b8a6
+}
+
+.deptHero p,
+.symHero p {
+    max-width: 620px;
+    color: #aab8ca;
+    line-height: 1.75;
+    font-size: 15px
+}
+
+.signal {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #55657b;
+    font-size: 8px;
+    letter-spacing: 2px
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    margin-top: 18px;
+    min-height: 45px
+}
+
+.about {
+    max-width: 1180px;
+    margin: 90px auto;
+    padding: 0 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 65px;
+    align-items: center
+}
+
+.visual {
+    min-height: 330px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    background: radial-gradient(circle, #12b8a615, transparent 55%)
+}
+
+.visual div {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 17px;
+    padding: 20px;
+    width: 175px;
+    box-shadow: 0 15px 40px #08101f12
+}
+
+.visual div:first-child {
+    position: relative
+}
+
+.visual div:nth-child(2) {
+    left: 0;
+    top: 15%
+}
+
+.visual div:nth-child(3) {
+    right: 0;
+    bottom: 15%
+}
+
+.visual div:first-child {
+    width: 210px
+}
+
+.visual div:first-child {
+    font-size: 32px
+}
+
+.visual b {
+    display: block;
+    font: 700 17px "Space Grotesk";
+    margin-top: 8px
+}
+
+.visual small {
+    font-size: 10px;
+    color: #65758b
+}
+
+.about article>small,
+.cta small,
+.heading small,
+.notice small {
+    color: #12b8a6;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px
+}
+
+.about h2,
+.heading h2 {
+    font: 700 clamp(32px, 4vw, 50px)/1 "Space Grotesk";
+    margin: 10px 0 18px
+}
+
+.about p {
+    color: #65758b;
+    line-height: 1.8
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 28px
+}
+
+.features b {
+    border-top: 2px solid #12b8a6;
+    padding-top: 10px;
+    font-size: 9px;
+    color: #12b8a6
+}
+
+.features span {
+    color: #08101f;
+    font-size: 10px
+}
+
+.strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background: #08101f;
+    color: #fff;
+    padding: 42px max(22px, calc((100% - 1180px)/2));
+    gap: 20px
+}
+
+.strip div {
+    border-left: 1px solid #304057;
+    padding-left: 17px
+}
+
+.strip b {
+    color: #12b8a6;
+    font-size: 9px
+}
+
+.strip strong {
+    display: block;
+    font: 700 20px "Space Grotesk";
+    margin: 5px 0
+}
+
+.strip small {
+    color: #91a0b4;
+    font-size: 10px
+}
+
+.cta {
+    max-width: 1135px;
+    margin: 75px auto 90px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 18px
+}
+
+.cta img {
+    width: 65px
+}
+
+.cta h2 {
+    font: 700 26px "Space Grotesk";
+    margin: 5px 0
+}
+
+.cta p {
+    color: #65758b;
+    font-size: 11px
+}
+
+.cta .btn {
+    margin: 0 0 0 auto
+}
+
+.symInner {
+    padding-top: 80px
+}
+
+.present {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #aebaca;
+    font-size: 9px;
+    line-height: 1.6;
+    letter-spacing: 1px
+}
+
+.present img {
+    width: 47px
+}
+
+.symHero h1 {
+    font: 700 clamp(75px, 13vw, 165px)/.75 "Space Grotesk";
+    letter-spacing: -8px;
+    margin: 42px 0 0
+}
+
+.year {
+    font: 700 clamp(45px, 7vw, 80px) "Space Grotesk";
+    color: #dce5f0
+}
+
+.actions {
+    display: flex;
+    gap: 10px
+}
+
+.ghost {
+    background: #ffffff0d;
+    border: 1px solid #40516a;
+    color: #fff !important
+}
+
+.quick {
+    display: grid;
+    grid-template-columns: repeat(3, 180px);
+    gap: 10px;
+    margin-top: 45px
+}
+
+.quick div {
+    padding: 15px;
+    border: 1px solid #2d3e55;
+    border-radius: 11px;
+    background: #ffffff08;
+    font-size: 20px
+}
+
+.quick b,
+.quick small {
+    display: block
+}
+
+.quick b {
+    font-size: 11px;
+    margin-top: 5px
+}
+
+.quick small {
+    font-size: 9px;
+    color: #8797aa
+}
+
+.dna {
+    position: absolute;
+    right: 8%;
+    font-size: 150px;
+    opacity: .25
+}
+
+.section {
+    max-width: 1180px;
+    margin: 75px auto;
+    padding: 0 22px
+}
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 25px
+}
+
+.heading>a {
+    color: #5267ff;
+    font-size: 12px;
+    font-weight: 800
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 17px;
+    padding: 22px;
+    min-height: 235px;
+    transition: .2s
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px #08101f12
+}
+
+.card .top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 28px
+}
+
+.card .top small {
+    color: #b4c0cf
+}
+
+.card label {
+    display: block;
+    color: #5267ff;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-top: 17px
+}
+
+.card h3 {
+    font: 700 21px "Space Grotesk";
+    margin: 7px 0
+}
+
+.card p {
+    font-size: 11px;
+    color: #65758b;
+    line-height: 1.6
+}
+
+.card>b {
+    font-size: 10px
+}
+
+.notice {
+    max-width: 1135px;
+    margin: 0 auto 80px;
+    padding: 28px;
+    background: #fff9f4;
+    border: 1px solid #efd4bd;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 20px
+}
+
+.notice img {
+    width: 65px
+}
+
+.notice h2 {
+    font: 700 24px "Space Grotesk";
+    margin: 5px 0
+}
+
+.notice p {
+    color: #85654f;
+    font-size: 11px
+}
+
+.pageHero,
+.formHero,
+.detailHero {
+    background: linear-gradient(135deg, #07101d, #142844);
+    color: #fff;
+    text-align: center;
+    padding: 70px 22px
+}
+
+.pageHero img,
+.formHero img,
+.detailHero>img {
+    width: 65px;
+    margin-bottom: 20px
+}
+
+.pageHero h1,
+.formHero h1,
+.detailHero h1 {
+    font: 700 clamp(42px, 7vw, 65px) "Space Grotesk";
+    margin: 8px 0 12px
+}
+
+.pageHero p,
+.formHero p,
+.detailHero p {
+    max-width: 650px;
+    margin: auto;
+    color: #aebaca;
+    line-height: 1.7;
+    font-size: 13px
+}
+
+.band {
+    max-width: none;
+    background: #edf2f7;
+    padding-top: 75px;
+    padding-bottom: 75px
+}
+
+.work {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 17px
+}
+
+.work img {
+    width: 65px
+}
+
+.work h2 {
+    font: 700 24px "Space Grotesk";
+    margin: 5px 0
+}
+
+.work p {
+    color: #65758b;
+    font-size: 11px
+}
+
+.work .btn {
+    margin: 0 0 0 auto
+}
+
+.detailHero>a {
+    display: block;
+    color: #92a1b4;
+    font-size: 11px;
+    margin-bottom: 28px
+}
+
+.bigIcon {
+    font-size: 55px
+}
+
+.detailHero .btn {
+    margin-top: 20px
+}
+
+.detail {
+    max-width: 1000px;
+    margin: 55px auto 90px;
+    padding: 0 22px;
+    display: grid;
+    grid-template-columns: 1.6fr .8fr;
+    gap: 17px
+}
+
+.detail article,
+.detail aside {
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 17px;
+    padding: 27px
+}
+
+.detail h2 {
+    font: 700 30px "Space Grotesk"
+}
+
+.detail ul {
+    list-style: none;
+    padding: 0
+}
+
+.detail li {
+    padding: 14px 0;
+    border-bottom: 1px solid #dce4ed;
+    color: #506074;
+    font-size: 12px;
+    line-height: 1.6
+}
+
+.detail li::first-letter {
+    color: #12b8a6
+}
+
+.detail aside img {
+    width: 65px
+}
+
+.detail aside p {
+    color: #65758b;
+    font-size: 12px;
+    line-height: 1.6
+}
+
+.formHero {
+    text-align: left;
+    padding-left: max(22px, calc((100% - 1000px)/2));
+    padding-right: max(22px, calc((100% - 1000px)/2))
+}
+
+.form {
+    max-width: 1000px;
+    margin: 25px auto 80px;
+    padding: 0 22px
+}
+
+.noticeText {
+    padding: 15px;
+    background: #fff9f4;
+    border: 1px solid #efd4bd;
+    border-radius: 10px;
+    color: #6d3b1e;
+    font-size: 11px;
+    margin-bottom: 15px
+}
+
+.form section {
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 17px;
+    padding: 26px;
+    margin-bottom: 15px
+}
+
+.form h2 {
+    font: 700 23px "Space Grotesk";
+    margin: 0 0 22px
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px
+}
+
+.form label {
+    font-size: 11px;
+    font-weight: 700
+}
+
+.form input:not([type=radio]) {
+    display: block;
+    width: 100%;
+    margin-top: 7px;
+    padding: 13px;
+    border: 1px solid #cbd6e2;
+    border-radius: 9px
+}
+
+.choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 9px
+}
+
+.choices label {
+    padding: 10px 12px;
+    border: 1px solid #dce4ed;
+    border-radius: 9px;
+    background: #fbfcfe
+}
+
+.selectgrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px
+}
+
+.selectgrid label {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    column-gap: 8px;
+    align-items: center;
+    padding: 13px;
+    border: 1px solid #dce4ed;
+    border-radius: 11px
+}
+
+.selectgrid label small {
+    grid-column: 3;
+    color: #65758b;
+    font-size: 9px;
+    line-height: 1.4
+}
+
+.twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px
+}
+
+.submit {
+    width: 100%;
+    border: 0;
+    padding: 17px;
+    border-radius: 10px;
+    background: #12b8a6;
+    color: #031917;
+    font-weight: 900;
+    cursor: pointer
+}
+
+.success {
+    min-height: 600px;
+    text-align: center;
+    padding: 75px 22px
+}
+
+.success img {
+    width: 70px
+}
+
+.success>div {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #dff9f5;
+    color: #0aa895;
+    font-size: 38px;
+    font-weight: 900;
+    margin: 20px auto
+}
+
+.success h1 {
+    font: 700 55px "Space Grotesk"
+}
+
+.success p {
+    color: #65758b;
+    line-height: 1.7
+}
+
+.success>strong {
+    display: inline-block;
+    padding: 13px 18px;
+    background: #fff;
+    border: 1px solid #dce4ed;
+    border-radius: 9px
+}
+
+.admin {
+    background: #07101d;
+    color: #fff;
+    padding: 55px max(22px, calc((100% - 1180px)/2));
+    position: relative
+}
+
+.admin h1 {
+    font: 700 45px "Space Grotesk";
+    margin: 7px 0
+}
+
+.stat {
+    position: absolute;
+    right: 8%;
+    top: 50px;
+    background: #ffffff0a;
+    border: 1px solid #2f4057;
+    border-radius: 12px;
+    padding: 17px 28px;
+    font-size: 30px;
+    color: #12b8a6
+}
+
+.stat small {
+    display: block;
+    color: #9baabd;
+    font-size: 8px
+}
+
+.tablewrap {
+    margin: 40px auto 90px;
+    max-width: 1200px;
+    padding: 0 22px;
+    overflow: auto
+}
+
+table {
+    background: #fff;
+    border-collapse: collapse;
+    min-width: 1200px;
+    width: 100%;
+    font-size: 10px
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #dce4ed;
+    white-space: nowrap;
+    text-align: left
+}
+
+th {
+    background: #edf2f7;
+    font-size: 8px
+}
+
+footer {
+    background: #06101c;
+    color: #95a4b7;
+    padding: 38px 22px 18px
+}
+
+footer>div:first-child {
+    max-width: 1180px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 11px
+}
+
+footer img {
+    width: 48px
+}
+
+footer b {
+    display: block;
+    color: #fff;
+    font: 700 11px "Space Grotesk"
+}
+
+footer span {
+    font-size: 9px
+}
+
+footer section {
+    max-width: 1180px;
+    margin: 20px auto;
+    display: flex;
+    gap: 20px;
+    font-size: 10px
+}
+
+footer>small {
+    display: block;
+    max-width: 1180px;
+    margin: auto;
+    border-top: 1px solid #1c2b3e;
+    padding-top: 15px;
+    font-size: 8px
+}
+
+.flash {
+    position: fixed;
+    z-index: 200;
+    right: 18px;
+    top: 95px;
+    background: #08101f;
+    color: #fff;
+    padding: 13px 17px;
+    border-radius: 10px;
+    font-size: 11px
+}
+
+@media(max-width:800px) {
+    nav {
+        display: none;
+        position: absolute;
+        top: 78px;
+        left: 0;
+        right: 0;
+        background: #07101d;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px 20px
+    }
+
+    nav.open {
+        display: flex
+    }
+
+    .nav button {
+        display: block
+    }
+
+    .heroInner {
+        flex-direction: column;
+        align-items: flex-start
+    }
+
+    .crest {
+        width: 150px
+    }
+
+    .dna {
+        right: -50px
+    }
+
+    .about {
+        grid-template-columns: 1fr;
+        margin-top: 60px
+    }
+
+    .strip {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .cards,
+    .selectgrid,
+    .inputs,
+    .twocol,
+    .detail {
+        grid-template-columns: 1fr
+    }
+
+    .quick {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .work {
+        flex-wrap: wrap
+    }
+
+    .work .btn {
+        width: 100%;
+        margin: 0
+    }
+
+    .cta {
+        margin: 55px 22px 70px;
+        flex-wrap: wrap
+    }
+
+    .cta .btn {
+        width: 100%;
+        margin: 0
+    }
+
+    .success h1 {
+        font-size: 45px
+    }
+}
+
+@media(max-width:480px) {
+    .brand b {
+        font-size: 8px
+    }
+
+    .brand small {
+        font-size: 6px
+    }
+
+    .nav {
+        padding: 9px 14px
+    }
+
+    .symHero h1 {
+        font-size: 70px;
+        letter-spacing: -4px
+    }
+
+    .quick {
+        grid-template-columns: 1fr
+    }
+
+    .strip {
+        grid-template-columns: 1fr
+    }
+
+    .section,
+    .form,
+    .detail {
+        padding-left: 15px;
+        padding-right: 15px
+    }
+
+    .form section {
+        padding: 20px
+    }
+
+    .actions {
+        flex-direction: column
+    }
+
+    .actions .btn {
+        width: 100%
+    }
+
+    .heroInner {
+        padding-left: 18px;
+        padding-right: 18px
+    }
+
+    .about {
+        padding: 0 16px
+    }
+
+    .features {
+        grid-template-columns: 1fr
+    }
+}
+
+
+/* =========================================================
+   B'ELITEZ 2K26 — BRAND HIERARCHY
+   College = largest
+   Department = medium
+   Symposium = smallest
+   ========================================================= */
+.brandHierarchy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.brandHierarchy .collegeName {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(19px, 2.2vw, 30px);
+    line-height: 1.05;
+    letter-spacing: .5px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.brandHierarchy .departmentName {
+    font-family: Inter, Arial, sans-serif;
+    font-size: clamp(10px, 1.15vw, 15px);
+    line-height: 1.2;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #aebaca;
+}
+
+.brandHierarchy .symposiumName {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(9px, 1vw, 13px);
+    line-height: 1.2;
+    letter-spacing: 3px;
+    font-weight: 800;
+    color: #12b8a6;
+    text-transform: uppercase;
+}
+
+.brandHierarchy .symposiumName span {
+    color: #ffffff;
+}
+
+.departmentHierarchy {
+    margin-bottom: 20px;
+}
+
+.departmentHierarchy .collegeName {
+    font-size: clamp(18px, 2vw, 27px);
+}
+
+.departmentHierarchy .departmentName {
+    font-size: clamp(10px, 1.1vw, 14px);
+}
+
+.departmentHierarchy h1 {
+    margin-top: 16px !important;
+}
+
+.symHierarchy {
+    margin-bottom: 20px;
+}
+
+.heroHierarchy {
+    margin-bottom: 28px;
+}
+
+.heroHierarchy .collegeName {
+    font-size: clamp(16px, 1.8vw, 24px);
+}
+
+.heroHierarchy .departmentName {
+    font-size: clamp(9px, 1vw, 13px);
+}
+
+.heroHierarchy .symposiumName {
+    font-size: clamp(9px, 1vw, 12px);
+}
+
+/* =========================================================
+   EVENT EXPLORATION
+   ========================================================= */
+.eventCard {
+    position: relative;
+}
+
+.eventCard .exploreButton {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 13px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: #edf8f7;
+    color: #078f82;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .2px;
+    transition: .2s ease;
+}
+
+.eventCard:hover .exploreButton {
+    background: #12b8a6;
+    color: #031917;
+    transform: translateX(2px);
+}
+
+.inlineExplore {
+    margin-top: 6px !important;
+}
+
+.sectionTitleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 22px;
+}
+
+.sectionTitleRow h2 {
+    margin: 0;
+}
+
+.sectionHint {
+    color: #7d8b9d;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.eventChoice {
+    position: relative;
+    transition: .2s ease;
+}
+
+.eventChoice:hover {
+    border-color: #12b8a6;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px #08101f0b;
+}
+
+.eventChoice .exploreMini {
+    grid-column: 3;
+    display: inline-block;
+    margin-top: 7px;
+    color: #078f82;
+    font-size: 9px;
+    font-weight: 900;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.eventChoice .exploreMini:hover {
+    color: #5267ff;
+}
+
+.eventChoiceIcon {
+    font-size: 20px;
+}
+
+.registrationBottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background: #08101f;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.registrationBottom small {
+    display: block;
+    color: #12b8a6;
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 900;
+}
+
+.registrationBottom strong {
+    display: block;
+    margin-top: 5px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 15px;
+}
+
+.registrationBottom .submit {
+    width: auto;
+    min-width: 230px;
+    margin: 0;
+}
+
+/* Individual event page */
+.backLink {
+    display: inline-block !important;
+    margin-bottom: 25px;
+    color: #92a1b4;
+    font-size: 11px;
+}
+
+.detailActions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.detailActions .btn {
+    margin-top: 18px;
+}
+
+.detailNote {
+    margin-top: 25px;
+    padding: 18px;
+    background: #f4f8fb;
+    border-radius: 11px;
+    border-left: 3px solid #12b8a6;
+}
+
+.detailNote strong {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 14px;
+}
+
+.detailNote p {
+    color: #65758b;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.detailNote .btn {
+    margin-top: 4px;
+    font-size: 10px;
+}
+
+.detail aside small {
+    color: #12b8a6;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.detail aside h3 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 21px;
+}
+
+/* Mobile */
+@media(max-width:800px) {
+    .brandHierarchy .collegeName {
+        font-size: 20px;
+    }
+
+    .brandHierarchy .departmentName {
+        font-size: 9px;
+        letter-spacing: 1.3px;
+    }
+
+    .brandHierarchy .symposiumName {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .sectionTitleRow {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .eventChoice .exploreMini {
+        grid-column: 2 / 4;
+    }
+
+    .registrationBottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .registrationBottom .submit {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media(max-width:480px) {
+    .brandHierarchy .collegeName {
+        font-size: 17px;
+        line-height: 1.1;
+    }
+
+    .brandHierarchy .departmentName {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .brandHierarchy .symposiumName {
+        font-size: 8px;
+        letter-spacing: 1.5px;
+    }
+
+    .heroHierarchy {
+        margin-bottom: 20px;
+    }
+
+    .eventChoice .exploreMini {
+        font-size: 8px;
+    }
+}

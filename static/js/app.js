@@ -1,0 +1,1 @@
+function validateRegistration(){const c=document.querySelector("[name=contact]").value.trim();if(!/^[0-9+\-\s]{10,15}$/.test(c)){alert("Enter a valid contact number.");return false}if(!document.querySelector("[name=technical_event]:checked")&&!document.querySelector("[name=nontechnical_event]:checked")){alert("Select at least one event.");return false}return true}

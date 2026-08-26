@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+
+.env
+.env.*
+
+firebase_service_account.json
+*-firebase-adminsdk-*.json
+
+belitez.db
+*.db
+
+.vscode/
+.idea/

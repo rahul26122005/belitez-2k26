@@ -1,0 +1,561 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login | B'ELITEZ 2K26{% endblock %}
+
+{% block content %}
+
+<style>
+    .admin-login-page {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 20px;
+        background:
+            radial-gradient(circle at top right,
+                rgba(24, 119, 242, 0.10),
+                transparent 35%),
+            radial-gradient(circle at bottom left,
+                rgba(20, 184, 166, 0.10),
+                transparent 35%);
+    }
+
+
+    .admin-login-card {
+        width: min(100%, 450px);
+        background: #ffffff;
+        border: 1px solid #e7ebf0;
+        border-radius: 24px;
+        padding: 38px 34px;
+        box-shadow:
+            0 20px 60px rgba(15, 23, 42, 0.10);
+    }
+
+
+    .admin-logo {
+        width: 82px;
+        height: 82px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto 20px;
+    }
+
+
+    .admin-heading {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+
+    .admin-heading small {
+        display: block;
+        color: #1677ff;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+
+
+    .admin-heading h1 {
+        margin: 0;
+        color: #172033;
+        font-size: 30px;
+        line-height: 1.2;
+        font-weight: 850;
+    }
+
+
+    .admin-heading p {
+        margin-top: 9px;
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    .admin-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+
+    .admin-field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+
+    .admin-field label {
+        color: #344054;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+
+    .input-wrap {
+        position: relative;
+    }
+
+
+    .input-wrap input {
+        width: 100%;
+        height: 48px;
+        padding: 0 45px 0 14px;
+
+        border: 1px solid #d9dee7;
+        border-radius: 11px;
+
+        background: #ffffff;
+        color: #172033;
+
+        font-size: 14px;
+
+        outline: none;
+
+        transition: 0.2s;
+    }
+
+
+    .input-wrap input:focus {
+        border-color: #1677ff;
+
+        box-shadow:
+            0 0 0 4px rgba(22, 119, 255, 0.10);
+    }
+
+
+    .input-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        font-size: 18px;
+        opacity: 0.65;
+
+        pointer-events: none;
+    }
+
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        border: none;
+        background: transparent;
+
+        cursor: pointer;
+
+        font-size: 17px;
+
+        padding: 5px;
+
+        color: #667085;
+    }
+
+
+    .password-toggle:hover {
+        color: #1677ff;
+    }
+
+
+    .remember-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 10px;
+
+        margin-top: -4px;
+    }
+
+
+    .remember {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+
+        font-size: 12px;
+        color: #667085;
+
+        cursor: pointer;
+    }
+
+
+    .remember input {
+        width: 15px;
+        height: 15px;
+
+        accent-color: #1677ff;
+    }
+
+
+    .login-button {
+        width: 100%;
+
+        min-height: 49px;
+
+        border: none;
+        border-radius: 11px;
+
+        background:
+            linear-gradient(135deg,
+                #1268d9,
+                #164e9c);
+
+        color: white;
+
+        font-size: 14px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 8px 20px rgba(18, 104, 217, 0.20);
+
+        transition: 0.2s;
+    }
+
+
+    .login-button:hover {
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 12px 25px rgba(18, 104, 217, 0.28);
+    }
+
+
+    .login-button:active {
+        transform: translateY(0);
+    }
+
+
+    .security-note {
+        margin-top: 22px;
+
+        padding: 12px 14px;
+
+        border-radius: 10px;
+
+        background: #f6f8fb;
+
+        color: #667085;
+
+        font-size: 11px;
+
+        line-height: 1.55;
+
+        text-align: center;
+    }
+
+
+    .back-link {
+        display: block;
+
+        margin-top: 18px;
+
+        text-align: center;
+
+        color: #1677ff;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 700;
+    }
+
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+
+    /* Flask flash messages */
+
+    .flash-container {
+        margin-bottom: 18px;
+    }
+
+
+    .flash-message {
+        padding: 12px 14px;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
+        font-weight: 600;
+    }
+
+
+    .flash-error {
+        background: #fff1f2;
+        color: #b42318;
+        border: 1px solid #fecdd3;
+    }
+
+
+    .flash-success {
+        background: #ecfdf3;
+        color: #027a48;
+        border: 1px solid #abefc6;
+    }
+
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+
+        .admin-login-page {
+            padding: 30px 14px;
+            min-height: 78vh;
+        }
+
+
+        .admin-login-card {
+            padding: 30px 20px;
+            border-radius: 20px;
+        }
+
+
+        .admin-logo {
+            width: 70px;
+            height: 70px;
+        }
+
+
+        .admin-heading h1 {
+            font-size: 25px;
+        }
+
+
+        .admin-heading p {
+            font-size: 12px;
+        }
+
+    }
+
+
+    @media (max-width: 360px) {
+
+        .admin-login-card {
+            padding: 26px 16px;
+        }
+
+
+        .admin-heading h1 {
+            font-size: 23px;
+        }
+
+    }
+</style>
+
+
+<section class="admin-login-page">
+
+    <div class="admin-login-card">
+
+
+        <!-- Biomedical Logo -->
+
+        <img src="{{ url_for(
+                'static',
+                filename='images/biomedical-logo.svg'
+            ) }}" class="admin-logo" alt="Biomedical Engineering Logo">
+
+
+        <!-- Heading -->
+
+        <div class="admin-heading">
+
+            <small>
+                ADMINISTRATION
+            </small>
+
+            <h1>
+                Admin Login
+            </h1>
+
+            <p>
+                B'ELITEZ 2K26 Registration Management
+            </p>
+
+        </div>
+
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages(
+        with_categories=true
+        ) %}
+
+        {% if messages %}
+
+        <div class="flash-container">
+
+            {% for category, message in messages %}
+
+            <div class="flash-message
+                            {% if category == 'error' %}
+                                flash-error
+                            {% else %}
+                                flash-success
+                            {% endif %}">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+        {% endwith %}
+
+
+        <!-- Login Form -->
+
+        <form method="POST" action="{{ url_for('admin_login') }}" class="admin-form">
+
+
+            <!-- Username -->
+
+            <div class="admin-field">
+
+                <label for="username">
+                    Admin Username
+                </label>
+
+                <div class="input-wrap">
+
+                    <input type="text" id="username" name="username" placeholder="Enter admin username"
+                        autocomplete="username" required>
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="admin-field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrap">
+
+                    <input type="password" id="password" name="password" placeholder="Enter admin password"
+                        autocomplete="current-password" required>
+
+                    <button type="button" class="password-toggle" onclick="togglePassword()"
+                        aria-label="Show or hide password">
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Remember -->
+
+            <div class="remember-row">
+
+                <label class="remember">
+
+                    <input type="checkbox" name="remember" value="1">
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+            </div>
+
+
+            <!-- Login -->
+
+            <button type="submit" class="login-button">
+
+                🔐 Login to Dashboard
+
+            </button>
+
+
+        </form>
+
+
+        <!-- Security Information -->
+
+        <div class="security-note">
+
+            🔒
+            This area is restricted to authorized
+            B'ELITEZ 2K26 administrators.
+
+        </div>
+
+
+        <!-- Back -->
+
+        <a href="{{ url_for('home') }}" class="back-link">
+            ← Back to Symposium
+        </a>
+
+
+    </div>
+
+</section>
+
+
+<script>
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(
+                ".password-toggle"
+            );
+
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            button.textContent = "🙈";
+
+        } else {
+
+            password.type = "password";
+
+            button.textContent = "👁";
+
+        }
+
+    }
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Events | B'ELITEZ 2K26{% endblock %}
+
+{% block content %}
+<section class="pageHero">
+    <div class="brandHierarchy heroHierarchy">
+        <div class="collegeName">MAHENDRA COLLEGE OF ENGINEERING</div>
+        <div class="departmentName">DEPARTMENT OF BIOMEDICAL ENGINEERING</div>
+        <div class="symposiumName">B'ELIEZ <span>2K26</span></div>
+    </div>
+    <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical Engineering Logo">
+    <small>EVENT DIRECTORY</small>
+    <h1>Choose Your Challenge</h1>
+    <p>Explore every event, read its rules and guidelines, then register for the events you want to attend.</p>
+</section>
+
+<section class="section">
+    <div class="heading">
+        <div>
+            <small>01</small>
+            <h2>Technical Events</h2>
+        </div>
+    </div>
+
+    <div class="cards">
+        {% for e in events if e.category == "Technical" %}
+        <a class="card eventCard" href="{{ url_for('detail', slug=e.slug) }}">
+            <div class="top">
+                <span>{{ e.icon }}</span>
+                <small>{{ "%02d"|format(loop.index) }}</small>
+            </div>
+            <label>{{ e.category }}</label>
+            <h3>{{ e.name }}</h3>
+            <p>{{ e.short }}</p>
+            <div class="exploreButton">Explore Event →</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section band">
+    <div class="heading">
+        <div>
+            <small>02</small>
+            <h2>Non-Technical Events</h2>
+        </div>
+    </div>
+
+    <div class="cards">
+        {% for e in events if e.category == "Non-Technical" %}
+        <a class="card eventCard" href="{{ url_for('detail', slug=e.slug) }}">
+            <div class="top">
+                <span>{{ e.icon }}</span>
+                <small>{{ "%02d"|format(loop.index) }}</small>
+            </div>
+            <label>{{ e.category }}</label>
+            <h3>{{ e.name }}</h3>
+            <p>{{ e.short }}</p>
+            <div class="exploreButton">Explore Event →</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="work eventCard">
+        <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical logo">
+        <div>
+            <small>03 • WORKSHOP</small>
+            <h2>Interactive Biomedical Workshop</h2>
+            <p>Learn practical concepts through an interactive hands-on session.</p>
+            <a class="exploreButton inlineExplore" href="{{ url_for('detail', slug='workshop') }}">
+                Explore Event →
+            </a>
+        </div>
+        <a class="btn" href="{{ url_for('register') }}">Register →</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,1409 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard | B'ELITEZ 2K26
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .admin-page {
+        padding: 40px 20px 70px;
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    /* =========================
+   HEADER
+========================= */
+
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .admin-header small {
+        color: #00b8b8;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .admin-header h1 {
+        margin: 8px 0;
+        font-size: clamp(32px, 5vw, 58px);
+    }
+
+    .admin-header p {
+        margin: 0;
+        color: #667085;
+    }
+
+
+    /* =========================
+   STATS
+========================= */
+
+    .admin-stats {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        min-width: 150px;
+        padding: 18px 22px;
+
+        border: 1px solid #d9e1ea;
+        border-radius: 16px;
+
+        background: #ffffff;
+
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+
+        font-size: 30px;
+        font-weight: 800;
+
+        color: #00aeb0;
+    }
+
+    .stat-label {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #667085;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================
+   FILTER PANEL
+========================= */
+
+    .filter-panel {
+
+        margin-bottom: 25px;
+
+        padding: 24px;
+
+        background: #ffffff;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 8px 25px rgba(15, 23, 42, 0.05);
+    }
+
+
+    .filter-title {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 20px;
+    }
+
+
+    .filter-title h2 {
+
+        margin: 0;
+
+        font-size: 20px;
+
+    }
+
+
+    .filter-title span {
+
+        color: #667085;
+
+        font-size: 13px;
+
+    }
+
+
+    /* =========================
+   FILTER GRID
+========================= */
+
+    .filter-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 15px;
+
+    }
+
+
+    .filter-group {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 7px;
+
+    }
+
+
+    .filter-group label {
+
+        font-size: 12px;
+
+        font-weight: 750;
+
+        color: #344054;
+
+    }
+
+
+    .filter-group input,
+    .filter-group select {
+
+        width: 100%;
+
+        height: 44px;
+
+        padding: 0 12px;
+
+        border-radius: 9px;
+
+        border: 1px solid #d0d5dd;
+
+        background: #ffffff;
+
+        color: #172033;
+
+        outline: none;
+
+        font-size: 13px;
+    }
+
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+
+        border-color: #00aeb0;
+
+        box-shadow:
+            0 0 0 3px rgba(0, 174, 176, 0.10);
+    }
+
+
+    /* =========================
+   FILTER BUTTONS
+========================= */
+
+    .filter-actions {
+
+        display: flex;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+
+        margin-top: 20px;
+    }
+
+
+    .filter-button {
+
+        border: none;
+
+        border-radius: 9px;
+
+        padding: 11px 18px;
+
+        font-size: 13px;
+
+        font-weight: 750;
+
+        cursor: pointer;
+    }
+
+
+    .clear-button {
+
+        background: #f2f4f7;
+
+        color: #344054;
+    }
+
+
+    .clear-button:hover {
+
+        background: #e4e7ec;
+    }
+
+
+    .download-button {
+
+        background: #087f5b;
+
+        color: #ffffff;
+    }
+
+
+    .download-button:hover {
+
+        background: #066b4c;
+    }
+
+
+    .logout-button {
+
+        background: #fff1f2;
+
+        color: #b42318;
+
+        text-decoration: none;
+    }
+
+
+    .logout-button:hover {
+
+        background: #ffe4e6;
+    }
+
+
+    /* =========================
+   TABLE
+========================= */
+
+    .table-container {
+
+        background: #ffffff;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 18px;
+
+        overflow: hidden;
+
+    }
+
+
+    .table-header {
+
+        padding: 18px 20px;
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 10px;
+
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+
+    .table-header h2 {
+
+        margin: 0;
+
+        font-size: 18px;
+
+    }
+
+
+    .table-count {
+
+        color: #667085;
+
+        font-size: 13px;
+
+    }
+
+
+    .table-scroll {
+
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+
+    table {
+
+        width: 100%;
+
+        min-width: 1350px;
+
+        border-collapse: collapse;
+    }
+
+
+    thead {
+
+        background: #edf3f8;
+    }
+
+
+    th {
+
+        padding: 13px 12px;
+
+        text-align: left;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        color: #344054;
+
+        white-space: nowrap;
+    }
+
+
+    td {
+
+        padding: 14px 12px;
+
+        border-top: 1px solid #edf0f4;
+
+        font-size: 12px;
+
+        color: #172033;
+
+        white-space: nowrap;
+    }
+
+
+    tbody tr:hover {
+
+        background: #f8fafc;
+    }
+
+
+    .no-results {
+
+        display: none;
+
+        padding: 45px;
+
+        text-align: center;
+
+        color: #667085;
+    }
+
+
+    /* =========================
+   MOBILE
+========================= */
+
+    @media (max-width: 1000px) {
+
+        .filter-grid {
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .admin-page {
+
+            padding: 25px 12px 50px;
+
+        }
+
+
+        .admin-header {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+        }
+
+
+        .filter-grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+
+        .filter-title {
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 5px;
+
+        }
+
+
+        .filter-actions {
+
+            flex-direction: column;
+
+        }
+
+
+        .filter-button {
+
+            width: 100%;
+
+        }
+
+
+        .stat-card {
+
+            flex: 1;
+
+            min-width: 120px;
+
+        }
+
+    }
+</style>
+
+
+<div class="admin-page">
+
+
+    <!-- =========================
+         ADMIN HEADER
+    ========================= -->
+
+    <section class="admin-header">
+
+        <div>
+
+            <small>
+                ADMINISTRATION
+            </small>
+
+            <h1>
+                Registration Dashboard
+            </h1>
+
+            <p>
+                Manage and analyse B'ELITEZ 2K26 registrations.
+            </p>
+
+        </div>
+
+
+        <div class="admin-stats">
+
+            <div class="stat-card">
+
+                <span class="stat-number" id="totalCount">
+                    {{ registrations|length }}
+                </span>
+
+                <span class="stat-label">
+                    Total Registrations
+                </span>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-number" id="filteredCount">
+                    {{ registrations|length }}
+                </span>
+
+                <span class="stat-label">
+                    Showing
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FILTER PANEL
+    ========================= -->
+
+    <section class="filter-panel">
+
+
+        <div class="filter-title">
+
+            <h2>
+                🔎 Filter Registrations
+            </h2>
+
+            <span>
+                Change any filter to update the table
+            </span>
+
+        </div>
+
+
+        <div class="filter-grid">
+
+
+            <!-- SEARCH -->
+
+            <div class="filter-group">
+
+                <label for="searchFilter">
+                    Search
+                </label>
+
+                <input type="text" id="searchFilter" placeholder="Name, college, contact...">
+
+            </div>
+
+
+            <!-- COLLEGE -->
+
+            <div class="filter-group">
+
+                <label for="collegeFilter">
+                    College
+                </label>
+
+                <select id="collegeFilter">
+
+                    <option value="">
+                        All Colleges
+                    </option>
+
+                    {% set colleges = registrations
+                    |map(attribute='college')
+                    |select
+                    |list
+                    |unique
+                    |list
+                    %}
+
+                    {% for college in colleges %}
+
+                    <option value="{{ college }}">
+                        {{ college }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- DEPARTMENT -->
+
+            <div class="filter-group">
+
+                <label for="departmentFilter">
+                    Department
+                </label>
+
+                <select id="departmentFilter">
+
+                    <option value="">
+                        All Departments
+                    </option>
+
+                    {% set departments = registrations
+                    |map(attribute='department')
+                    |select
+                    |list
+                    |unique
+                    |list
+                    %}
+
+                    {% for department in departments %}
+
+                    <option value="{{ department }}">
+                        {{ department }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- YEAR -->
+
+            <div class="filter-group">
+
+                <label for="yearFilter">
+                    Year
+                </label>
+
+                <select id="yearFilter">
+
+                    <option value="">
+                        All Years
+                    </option>
+
+                    <option value="1st YEAR">
+                        1st YEAR
+                    </option>
+
+                    <option value="2nd YEAR">
+                        2nd YEAR
+                    </option>
+
+                    <option value="3rd YEAR">
+                        3rd YEAR
+                    </option>
+
+                    <option value="FINAL YEAR">
+                        FINAL YEAR
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TECHNICAL -->
+
+            <div class="filter-group">
+
+                <label for="technicalFilter">
+                    Technical Event
+                </label>
+
+                <select id="technicalFilter">
+
+                    <option value="">
+                        All Technical Events
+                    </option>
+
+                    {% for e in events
+                    if e.category == "Technical"
+                    %}
+
+                    <option value="{{ e.name }}">
+                        {{ e.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- NON TECHNICAL -->
+
+            <div class="filter-group">
+
+                <label for="nontechnicalFilter">
+                    Non-Technical Event
+                </label>
+
+                <select id="nontechnicalFilter">
+
+                    <option value="">
+                        All Non-Technical Events
+                    </option>
+
+                    {% for e in events
+                    if e.category == "Non-Technical"
+                    %}
+
+                    <option value="{{ e.name }}">
+                        {{ e.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- WORKSHOP -->
+
+            <div class="filter-group">
+
+                <label for="workshopFilter">
+                    Workshop
+                </label>
+
+                <select id="workshopFilter">
+
+                    <option value="">
+                        All
+                    </option>
+
+                    <option value="YES">
+                        YES
+                    </option>
+
+                    <option value="NO">
+                        NO
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- FOOD -->
+
+            <div class="filter-group">
+
+                <label for="foodFilter">
+                    Food
+                </label>
+
+                <select id="foodFilter">
+
+                    <option value="">
+                        All
+                    </option>
+
+                    <option value="VEG">
+                        VEG
+                    </option>
+
+                    <option value="NON-VEG">
+                        NON-VEG
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="filter-actions">
+
+            <button type="button" class="filter-button clear-button" onclick="clearFilters()">
+                🔄 Clear Filters
+            </button>
+
+
+            <button type="button" class="filter-button download-button" onclick="downloadFilteredExcel()">
+                📥 Download Filtered Excel
+            </button>
+
+
+            <a href="{{ url_for('admin_logout') }}" class="filter-button logout-button">
+                🚪 Logout
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         REGISTRATION TABLE
+    ========================= -->
+
+    <section class="table-container">
+
+
+        <div class="table-header">
+
+            <h2>
+                Registration Records
+            </h2>
+
+            <span class="table-count" id="tableCount">
+                Showing {{ registrations|length }}
+                registrations
+            </span>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table id="registrationTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Name</th>
+
+                        <th>Department</th>
+
+                        <th>Year</th>
+
+                        <th>College</th>
+
+                        <th>Contact</th>
+
+                        <th>Email</th>
+
+                        <th>Technical</th>
+
+                        <th>Non-Technical</th>
+
+                        <th>Workshop</th>
+
+                        <th>Food</th>
+
+                        <th>Registered</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for r in registrations %}
+
+                    <tr class="registration-row">
+
+
+                        <td>
+                            {{ r.id }}
+                        </td>
+
+
+                        <td>
+                            {{ r.name or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.department or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.year or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.college or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.contact or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.email or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.technical_event or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.nontechnical_event or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.workshop or '' }}
+                        </td>
+
+
+                        <td>
+                            {{ r.food or '' }}
+                        </td>
+
+
+                        <td>
+
+                            {% if r.registered_at %}
+
+                            {{ r.registered_at }}
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+            <div class="no-results" id="noResults">
+
+                🔍
+
+                <h3>
+                    No registrations found
+                </h3>
+
+                <p>
+                    Try changing or clearing your filters.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+    /* ============================================================
+       FILTER ELEMENTS
+    ============================================================ */
+
+    const searchFilter =
+        document.getElementById("searchFilter");
+
+    const collegeFilter =
+        document.getElementById("collegeFilter");
+
+    const departmentFilter =
+        document.getElementById("departmentFilter");
+
+    const yearFilter =
+        document.getElementById("yearFilter");
+
+    const technicalFilter =
+        document.getElementById("technicalFilter");
+
+    const nontechnicalFilter =
+        document.getElementById("nontechnicalFilter");
+
+    const workshopFilter =
+        document.getElementById("workshopFilter");
+
+    const foodFilter =
+        document.getElementById("foodFilter");
+
+
+    /* ============================================================
+       TABLE ROWS
+    ============================================================ */
+
+    const rows = Array.from(
+        document.querySelectorAll(
+            ".registration-row"
+        )
+    );
+
+
+    /* ============================================================
+       FILTER FUNCTION
+    ============================================================ */
+
+    function applyFilters() {
+
+        const search =
+            searchFilter.value
+                .trim()
+                .toLowerCase();
+
+        const college =
+            collegeFilter.value
+                .trim()
+                .toLowerCase();
+
+        const department =
+            departmentFilter.value
+                .trim()
+                .toLowerCase();
+
+        const year =
+            yearFilter.value
+                .trim()
+                .toLowerCase();
+
+        const technical =
+            technicalFilter.value
+                .trim()
+                .toLowerCase();
+
+        const nontechnical =
+            nontechnicalFilter.value
+                .trim()
+                .toLowerCase();
+
+        const workshop =
+            workshopFilter.value
+                .trim()
+                .toLowerCase();
+
+        const food =
+            foodFilter.value
+                .trim()
+                .toLowerCase();
+
+
+        let visibleCount = 0;
+
+
+        rows.forEach(row => {
+
+            const cells =
+                row.querySelectorAll("td");
+
+
+            /*
+                Column order:
+    
+                0 = ID
+                1 = Name
+                2 = Department
+                3 = Year
+                4 = College
+                5 = Contact
+                6 = Email
+                7 = Technical
+                8 = Non-Technical
+                9 = Workshop
+                10 = Food
+                11 = Registered
+            */
+
+
+            const rowText =
+                row.innerText.toLowerCase();
+
+
+            const rowDepartment =
+                cells[2].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowYear =
+                cells[3].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowCollege =
+                cells[4].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowTechnical =
+                cells[7].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowNonTechnical =
+                cells[8].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowWorkshop =
+                cells[9].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowFood =
+                cells[10].innerText
+                    .trim()
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                rowText.includes(search);
+
+
+            const matchesCollege =
+                !college ||
+                rowCollege === college;
+
+
+            const matchesDepartment =
+                !department ||
+                rowDepartment === department;
+
+
+            const matchesYear =
+                !year ||
+                rowYear === year;
+
+
+            const matchesTechnical =
+                !technical ||
+                rowTechnical === technical;
+
+
+            const matchesNonTechnical =
+                !nontechnical ||
+                rowNonTechnical === nontechnical;
+
+
+            const matchesWorkshop =
+                !workshop ||
+                rowWorkshop === workshop;
+
+
+            const matchesFood =
+                !food ||
+                rowFood === food;
+
+
+            const visible =
+                matchesSearch &&
+                matchesCollege &&
+                matchesDepartment &&
+                matchesYear &&
+                matchesTechnical &&
+                matchesNonTechnical &&
+                matchesWorkshop &&
+                matchesFood;
+
+
+            row.style.display =
+                visible ? "" : "none";
+
+
+            if (visible) {
+
+                visibleCount++;
+
+            }
+
+        });
+
+
+        document.getElementById(
+            "filteredCount"
+        ).textContent = visibleCount;
+
+
+        document.getElementById(
+            "tableCount"
+        ).textContent =
+            `Showing ${visibleCount} registrations`;
+
+
+        document.getElementById(
+            "noResults"
+        ).style.display =
+            visibleCount === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+    /* ============================================================
+       LISTEN FOR FILTER CHANGES
+    ============================================================ */
+
+    [
+        searchFilter,
+        collegeFilter,
+        departmentFilter,
+        yearFilter,
+        technicalFilter,
+        nontechnicalFilter,
+        workshopFilter,
+        foodFilter
+    ].forEach(element => {
+
+        element.addEventListener(
+            "input",
+            applyFilters
+        );
+
+        element.addEventListener(
+            "change",
+            applyFilters
+        );
+
+    });
+
+
+    /* ============================================================
+       CLEAR FILTERS
+    ============================================================ */
+
+    function clearFilters() {
+
+        searchFilter.value = "";
+
+        collegeFilter.value = "";
+
+        departmentFilter.value = "";
+
+        yearFilter.value = "";
+
+        technicalFilter.value = "";
+
+        nontechnicalFilter.value = "";
+
+        workshopFilter.value = "";
+
+        foodFilter.value = "";
+
+
+        applyFilters();
+
+    }
+
+
+    /* ============================================================
+       DOWNLOAD FILTERED EXCEL
+    ============================================================ */
+
+    function downloadFilteredExcel() {
+
+        const visibleRows =
+            rows.filter(
+                row =>
+                    row.style.display !== "none"
+            );
+
+
+        if (visibleRows.length === 0) {
+
+            alert(
+                "There are no registrations to download."
+            );
+
+            return;
+
+        }
+
+
+        let csv = "";
+
+
+        csv +=
+            "ID,Name,Department,Year,College,Contact,Email,Technical Event,Non-Technical Event,Workshop,Food,Registered\n";
+
+
+        visibleRows.forEach(row => {
+
+            const cells =
+                row.querySelectorAll("td");
+
+
+            const values =
+                Array.from(cells).map(
+                    cell => {
+
+                        let value =
+                            cell.innerText
+                                .trim()
+                                .replace(
+                                    /"/g,
+                                    '""'
+                                );
+
+                        return `"${value}"`;
+
+                    }
+                );
+
+
+            csv += values.join(",") + "\n";
+
+        });
+
+
+        const blob =
+            new Blob(
+                [csv],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+
+        const now =
+            new Date();
+
+
+        const date =
+            now.toISOString()
+                .slice(0, 10);
+
+
+        link.download =
+            `BELITEZ_2K26_Filtered_${date}.csv`;
+
+
+        document.body.appendChild(link);
+
+
+        link.click();
+
+
+        document.body.removeChild(link);
+
+
+        URL.revokeObjectURL(url);
+
+    }
+
+
+    /* ============================================================
+       INITIAL FILTER
+    ============================================================ */
+
+    applyFilters();
+
+</script>
+
+
+{% endblock %}

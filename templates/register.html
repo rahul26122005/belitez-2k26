@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}Registration | B'ELITEZ 2K26{% endblock %}
+
+{% block content %}
+<section class="formHero">
+    <div class="formHeroInner">
+        <div class="brandHierarchy">
+            <div class="collegeName">MAHENDRA COLLEGE OF ENGINEERING</div>
+            <div class="departmentName">DEPARTMENT OF BIOMEDICAL ENGINEERING</div>
+            <div class="symposiumName">B'ELIEZ <span>2K26</span></div>
+        </div>
+        <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical Engineering Logo">
+        <small>OFFICIAL SYMPOSIUM REGISTRATION</small>
+        <h1>Registration</h1>
+        <p>Complete the form from any phone, tablet or computer.</p>
+    </div>
+</section>
+
+<form method="post" class="form" onsubmit="return validateRegistration()">
+
+    <div class="noticeText">
+        <b>Important:</b> Accommodation will not be provided.
+    </div>
+
+    <section>
+        <h2>01 • Participant Details</h2>
+
+        <div class="inputs">
+            <label>
+                Name *
+                <input required name="name" value="{{ form.get('name','') }}" placeholder="Full name">
+            </label>
+
+            <label>
+                College Name *
+                <input required name="college" value="{{ form.get('college','') }}" placeholder="College / Institution">
+            </label>
+
+            <label>
+                Department *
+                <input required name="department" value="{{ form.get('department','') }}" placeholder="Department">
+            </label>
+
+            <label>
+                Contact Number *
+                <input required name="contact" value="{{ form.get('contact','') }}"
+                    placeholder="10-digit mobile number">
+            </label>
+
+            <label>
+                Mail ID
+                <input type="email" name="email" value="{{ form.get('email','') }}" placeholder="you@example.com">
+            </label>
+        </div>
+
+        <label>Year *</label>
+        <div class="choices">
+            {% for y in ['1st YEAR','2nd YEAR','3rd YEAR','FINAL YEAR'] %}
+            <label>
+                <input type="radio" required name="year" value="{{ y }}" {% if form.get('year')==y %}checked{% endif %}>
+                {{ y }}
+            </label>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <div class="sectionTitleRow">
+            <h2>02 • Technical Event</h2>
+            <span class="sectionHint">Select your technical event</span>
+        </div>
+
+        <div class="selectgrid">
+            {% for e in events if e.category == "Technical" %}
+            <label class="eventChoice">
+                <input type="radio" name="technical_event" value="{{ e.name }}" {% if
+                    form.get('technical_event')==e.name %}checked{% endif %}>
+                <span class="eventChoiceIcon">{{ e.icon }}</span>
+                <b>{{ e.name }}</b>
+                <small>{{ e.short }}</small>
+                <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
+                    onclick="event.stopPropagation();">
+                    Explore Event →
+                </a>
+            </label>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <div class="sectionTitleRow">
+            <h2>03 • Non-Technical Event</h2>
+            <span class="sectionHint">Select your non-technical event</span>
+        </div>
+
+        <div class="selectgrid">
+            {% for e in events if e.category == "Non-Technical" %}
+            <label class="eventChoice">
+                <input type="radio" name="nontechnical_event" value="{{ e.name }}" {% if
+                    form.get('nontechnical_event')==e.name %}checked{% endif %}>
+                <span class="eventChoiceIcon">{{ e.icon }}</span>
+                <b>{{ e.name }}</b>
+                <small>{{ e.short }}</small>
+                <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
+                    onclick="event.stopPropagation();">
+                    Explore Event →
+                </a>
+            </label>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section>
+        <div class="sectionTitleRow">
+            <h2>04 • Workshop & Food</h2>
+            <span class="sectionHint">Complete your preferences</span>
+        </div>
+
+        <div class="twocol">
+            <div>
+                <label>Workshop *</label>
+                <div class="choices">
+                    <label>
+                        <input required type="radio" name="workshop" value="YES" {% if form.get('workshop')=='YES'
+                            %}checked{% endif %}>
+                        YES
+                    </label>
+                    <label>
+                        <input type="radio" name="workshop" value="NO" {% if form.get('workshop')=='NO' %}checked{%
+                            endif %}>
+                        NO
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label>Food *</label>
+                <div class="choices">
+                    <label>
+                        <input required type="radio" name="food" value="VEG" {% if form.get('food')=='VEG' %}checked{%
+                            endif %}>
+                        VEG
+                    </label>
+                    <label>
+                        <input type="radio" name="food" value="NON-VEG" {% if form.get('food')=='NON-VEG' %}checked{%
+                            endif %}>
+                        NON-VEG
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="registrationBottom">
+        <div>
+            <small>READY?</small>
+            <strong>Submit your B'ELITEZ 2K26 registration.</strong>
+        </div>
+        <button class="submit" type="submit">Submit Registration →</button>
+    </div>
+</form>
+{% endblock %}
