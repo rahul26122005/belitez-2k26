@@ -1120,9 +1120,8 @@ def admin():
 # ============================================================
 # ADMIN PAYMENT SCREENSHOT
 #
-# The image is retrieved from Firebase Storage.
-#
-# It is NOT stored locally.
+# The image is retrieved directly from Firestore.
+# It is NOT stored locally and does NOT use Firebase Storage.
 # ============================================================
 
 
@@ -1133,7 +1132,7 @@ def admin_payment(registration_id):
     Retrieve the payment screenshot directly from the same
     Firestore registration document.
 
-    No Firebase Storage bucket is used.
+    No Firebase Storage or local file is used.
     """
 
     document = db.collection("Registrations").document(registration_id).get()
@@ -1170,6 +1169,25 @@ def admin_payment(registration_id):
     except Exception as error:
         print("PAYMENT IMAGE ERROR:", error)
         abort(404)
+
+
+# ============================================================
+# ADMIN PAYMENT SCREENSHOT COMPATIBILITY ROUTE
+# ============================================================
+#
+# The current admin.html may call the endpoint name
+# "admin_payment_screenshot". Keep this compatibility endpoint
+# so the existing dashboard works without changing its other code.
+# The actual image still comes directly from Firestore.
+# ============================================================
+
+
+@app.route(
+    "/admin/payment-screenshot/<registration_id>", endpoint="admin_payment_screenshot"
+)
+@admin_required
+def admin_payment_screenshot(registration_id):
+    return admin_payment(registration_id)
 
 
 # ============================================================
