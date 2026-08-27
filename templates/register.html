@@ -1,162 +1,862 @@
 {% extends "base.html" %}
+
 {% block title %}Registration | B'ELITEZ 2K26{% endblock %}
 
 {% block content %}
+
 <section class="formHero">
+
     <div class="formHeroInner">
+
         <div class="brandHierarchy">
-            <div class="collegeName">MAHENDRA COLLEGE OF ENGINEERING</div>
-            <div class="departmentName">DEPARTMENT OF BIOMEDICAL ENGINEERING</div>
-            <div class="symposiumName">B'ELIEZ <span>2K26</span></div>
+
+            <div class="collegeName">
+                MAHENDRA COLLEGE OF ENGINEERING
+            </div>
+
+            <div class="departmentName">
+                DEPARTMENT OF BIOMEDICAL ENGINEERING
+            </div>
+
+            <div class="symposiumName">
+                B'ELITEZ <span>2K26</span>
+            </div>
+
         </div>
-        <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical Engineering Logo">
-        <small>OFFICIAL SYMPOSIUM REGISTRATION</small>
-        <h1>Registration</h1>
-        <p>Complete the form from any phone, tablet or computer.</p>
+
+        <img src="{{ url_for('static', filename='images/biomedical-logo.svg') }}" alt="Biomedical Engineering Logo"
+            class="biomedicalLogo">
+
+        <small>
+            OFFICIAL SYMPOSIUM REGISTRATION
+        </small>
+
+        <h1>
+            Registration
+        </h1>
+
+        <p>
+            Complete the form from any phone, tablet or computer.
+        </p>
+
     </div>
+
 </section>
 
-<form method="post" class="form" onsubmit="return validateRegistration()">
+
+<form method="POST" class="form" enctype="multipart/form-data" onsubmit="return validateRegistration()">
+
+
+    <!-- ========================================================= -->
+    <!-- IMPORTANT NOTICE -->
+    <!-- ========================================================= -->
 
     <div class="noticeText">
-        <b>Important:</b> Accommodation will not be provided.
+
+        <b>Important:</b>
+        Accommodation will not be provided.
+
     </div>
 
+
+    <!-- ========================================================= -->
+    <!-- 01 PARTICIPANT DETAILS -->
+    <!-- ========================================================= -->
+
     <section>
-        <h2>01 • Participant Details</h2>
+
+        <h2>
+            01 • Participant Details
+        </h2>
 
         <div class="inputs">
+
             <label>
+
                 Name *
-                <input required name="name" value="{{ form.get('name','') }}" placeholder="Full name">
+
+                <input type="text" required name="name" value="{{ form.get('name', '') }}" placeholder="Full name"
+                    autocomplete="name">
+
             </label>
 
+
             <label>
+
                 College Name *
-                <input required name="college" value="{{ form.get('college','') }}" placeholder="College / Institution">
+
+                <input type="text" required name="college" value="{{ form.get('college', '') }}"
+                    placeholder="College / Institution">
+
             </label>
 
+
             <label>
+
                 Department *
-                <input required name="department" value="{{ form.get('department','') }}" placeholder="Department">
+
+                <input type="text" required name="department" value="{{ form.get('department', '') }}"
+                    placeholder="Department">
+
             </label>
 
+
             <label>
+
                 Contact Number *
-                <input required name="contact" value="{{ form.get('contact','') }}"
-                    placeholder="10-digit mobile number">
+
+                <input type="tel" required name="contact" value="{{ form.get('contact', '') }}"
+                    placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric">
+
             </label>
+
 
             <label>
-                Mail ID
-                <input type="email" name="email" value="{{ form.get('email','') }}" placeholder="you@example.com">
+
+                Mail ID *
+
+                <input type="email" required name="email" value="{{ form.get('email', '') }}"
+                    placeholder="you@example.com" autocomplete="email">
+
             </label>
+
         </div>
 
-        <label>Year *</label>
+
+        <!-- YEAR -->
+
+        <label>
+            Year *
+        </label>
+
         <div class="choices">
-            {% for y in ['1st YEAR','2nd YEAR','3rd YEAR','FINAL YEAR'] %}
+
+            {% for y in ['1st YEAR', '2nd YEAR', '3rd YEAR', 'FINAL YEAR'] %}
+
             <label>
+
                 <input type="radio" required name="year" value="{{ y }}" {% if form.get('year')==y %}checked{% endif %}>
+
                 {{ y }}
+
             </label>
+
             {% endfor %}
+
         </div>
+
     </section>
 
+
+
+    <!-- ========================================================= -->
+    <!-- 02 TECHNICAL EVENT -->
+    <!-- ========================================================= -->
+
     <section>
+
         <div class="sectionTitleRow">
-            <h2>02 • Technical Event</h2>
-            <span class="sectionHint">Select your technical event</span>
+
+            <h2>
+                02 • Technical Event
+            </h2>
+
+            <span class="sectionHint">
+                Select your technical event
+            </span>
+
         </div>
 
+
         <div class="selectgrid">
+
             {% for e in events if e.category == "Technical" %}
+
             <label class="eventChoice">
+
                 <input type="radio" name="technical_event" value="{{ e.name }}" {% if
                     form.get('technical_event')==e.name %}checked{% endif %}>
-                <span class="eventChoiceIcon">{{ e.icon }}</span>
-                <b>{{ e.name }}</b>
-                <small>{{ e.short }}</small>
+
+                <span class="eventChoiceIcon">
+                    {{ e.icon }}
+                </span>
+
+                <b>
+                    {{ e.name }}
+                </b>
+
+                <small>
+                    {{ e.short }}
+                </small>
+
+
                 <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
                     onclick="event.stopPropagation();">
                     Explore Event →
                 </a>
+
             </label>
+
             {% endfor %}
+
         </div>
+
     </section>
 
+
+
+    <!-- ========================================================= -->
+    <!-- 03 NON TECHNICAL EVENT -->
+    <!-- ========================================================= -->
+
     <section>
+
         <div class="sectionTitleRow">
-            <h2>03 • Non-Technical Event</h2>
-            <span class="sectionHint">Select your non-technical event</span>
+
+            <h2>
+                03 • Non-Technical Event
+            </h2>
+
+            <span class="sectionHint">
+                Select your non-technical event
+            </span>
+
         </div>
+
 
         <div class="selectgrid">
+
             {% for e in events if e.category == "Non-Technical" %}
+
             <label class="eventChoice">
+
                 <input type="radio" name="nontechnical_event" value="{{ e.name }}" {% if
                     form.get('nontechnical_event')==e.name %}checked{% endif %}>
-                <span class="eventChoiceIcon">{{ e.icon }}</span>
-                <b>{{ e.name }}</b>
-                <small>{{ e.short }}</small>
+
+                <span class="eventChoiceIcon">
+                    {{ e.icon }}
+                </span>
+
+                <b>
+                    {{ e.name }}
+                </b>
+
+                <small>
+                    {{ e.short }}
+                </small>
+
+
                 <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
                     onclick="event.stopPropagation();">
                     Explore Event →
                 </a>
+
             </label>
+
             {% endfor %}
+
         </div>
+
     </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- 04 WORKSHOP & FOOD -->
+    <!-- ========================================================= -->
 
     <section>
+
         <div class="sectionTitleRow">
-            <h2>04 • Workshop & Food</h2>
-            <span class="sectionHint">Complete your preferences</span>
+
+            <h2>
+                04 • Workshop & Food
+            </h2>
+
+            <span class="sectionHint">
+                Complete your preferences
+            </span>
+
         </div>
+
 
         <div class="twocol">
+
+
+            <!-- WORKSHOP -->
+
             <div>
-                <label>Workshop *</label>
+
+                <label>
+                    Workshop *
+                </label>
+
                 <div class="choices">
+
                     <label>
+
                         <input required type="radio" name="workshop" value="YES" {% if form.get('workshop')=='YES'
                             %}checked{% endif %}>
+
                         YES
+
                     </label>
+
+
                     <label>
+
                         <input type="radio" name="workshop" value="NO" {% if form.get('workshop')=='NO' %}checked{%
                             endif %}>
+
                         NO
+
                     </label>
+
                 </div>
+
             </div>
+
+
+
+            <!-- FOOD -->
 
             <div>
-                <label>Food *</label>
+
+                <label>
+                    Food *
+                </label>
+
                 <div class="choices">
+
                     <label>
+
                         <input required type="radio" name="food" value="VEG" {% if form.get('food')=='VEG' %}checked{%
                             endif %}>
+
                         VEG
+
                     </label>
+
+
                     <label>
+
                         <input type="radio" name="food" value="NON-VEG" {% if form.get('food')=='NON-VEG' %}checked{%
                             endif %}>
+
                         NON-VEG
+
                     </label>
+
                 </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <div class="registrationBottom">
-        <div>
-            <small>READY?</small>
-            <strong>Submit your B'ELITEZ 2K26 registration.</strong>
+
+
+    <!-- ========================================================= -->
+    <!-- 05 PAYMENT -->
+    <!-- ========================================================= -->
+
+    <section>
+
+        <div class="sectionTitleRow">
+
+            <h2>
+                05 • Payment
+            </h2>
+
+            <span class="sectionHint">
+                Complete your payment before submitting
+            </span>
+
         </div>
-        <button class="submit" type="submit">Submit Registration →</button>
+
+
+        <!-- PAYMENT INFORMATION -->
+
+        <div class="paymentInstruction">
+
+            <strong>
+                Payment through any one of the given QR below.
+            </strong>
+
+            <p>
+                Please scan any one of the QR codes below using your preferred UPI application.
+            </p>
+
+        </div>
+
+
+
+        <!-- ===================================================== -->
+        <!-- UPI QR CODE 1 -->
+        <!-- ===================================================== -->
+
+        <div class="paymentCard">
+
+            <div class="paymentCardTitle">
+                Payment QR – 1
+            </div>
+
+            <div class="paymentImageWrapper">
+
+                <img src="{{ url_for('static', filename='images/payment_qr_1.png') }}" alt="Payment QR Code 1"
+                    class="paymentQR">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===================================================== -->
+        <!-- UPI QR CODE 2 -->
+        <!-- ===================================================== -->
+
+        <div class="paymentCard">
+
+            <div class="paymentCardTitle">
+                Payment QR – 2
+            </div>
+
+            <div class="paymentImageWrapper">
+
+                <img src="{{ url_for('static', filename='images/payment_qr_2.png') }}" alt="Payment QR Code 2"
+                    class="paymentQR">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===================================================== -->
+        <!-- PAYMENT SCREENSHOT UPLOAD -->
+        <!-- ===================================================== -->
+
+        <div class="uploadCard">
+
+            <label for="payment_screenshot">
+
+                Upload payment screenshot
+                <span class="requiredStar">*</span>
+
+            </label>
+
+
+            <p class="uploadHint">
+                Upload 1 supported file: image. Max. 10 MB.
+            </p>
+
+
+            <div class="fileUploadWrapper">
+
+                <input type="file" id="payment_screenshot" name="payment_screenshot"
+                    accept="image/png,image/jpeg,image/jpg,image/webp" required>
+
+            </div>
+
+
+            <div id="filePreview" class="filePreview" style="display:none;">
+
+                <img id="previewImage" src="" alt="Payment Screenshot Preview">
+
+                <div>
+
+                    <strong id="fileName"></strong>
+
+                    <small id="fileSize"></small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ===================================================== -->
+        <!-- TRANSACTION ID -->
+        <!-- ===================================================== -->
+
+        <div class="transactionCard">
+
+            <label for="transaction_id">
+
+                TRANSACTION ID
+                <span class="requiredStar">*</span>
+
+            </label>
+
+
+            <input type="text" id="transaction_id" name="transaction_id" value="{{ form.get('transaction_id', '') }}"
+                placeholder="Enter your UPI transaction ID" required maxlength="100" autocomplete="off">
+
+            <small>
+                Enter the transaction/reference ID shown in your payment app.
+            </small>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- WHATSAPP + HELP DESK -->
+    <!-- ========================================================= -->
+
+    <section class="contactSection">
+
+        <div class="contactCard">
+
+            <h3>
+                Join on WhatsApp
+            </h3>
+
+            <p>
+                Join our official WhatsApp group for event updates,
+                announcements and important information.
+            </p>
+
+            <a href="https://chat.whatsapp.com/CedzbVRtuDH7Zt24dq02?mode=ems_wa_t" target="_blank"
+                rel="noopener noreferrer" class="whatsappLink">
+                Join WhatsApp Group →
+            </a>
+
+        </div>
+
+
+
+        <div class="contactCard">
+
+            <h3>
+                HelpDesk :
+            </h3>
+
+            <p>
+                For any queries, contact through the following mail:
+            </p>
+
+            <a href="mailto:belitez2k25@gmail.com" class="emailLink">
+                belitez2k25@gmail.com
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- SUBMIT -->
+    <!-- ========================================================= -->
+
+    <div class="registrationBottom">
+
+        <div>
+
+            <small>
+                READY?
+            </small>
+
+            <strong>
+                Submit your B'ELITEZ 2K26 registration.
+            </strong>
+
+        </div>
+
+
+        <button class="submit" type="submit" id="submitButton">
+            Submit Registration →
+        </button>
+
     </div>
+
 </form>
+
+
+
+<!-- ============================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================= -->
+
+<script>
+
+    function validateRegistration() {
+
+        const form = document.querySelector(".form");
+
+        const contact = document.querySelector(
+            'input[name="contact"]'
+        ).value.trim();
+
+
+        /* ---------------------------------------------
+           CONTACT NUMBER VALIDATION
+        --------------------------------------------- */
+
+        if (!/^[0-9]{10}$/.test(contact)) {
+
+            alert(
+                "Please enter a valid 10-digit contact number."
+            );
+
+            return false;
+
+        }
+
+
+
+        /* ---------------------------------------------
+           EVENT VALIDATION
+        --------------------------------------------- */
+
+        const technicalEvent =
+            document.querySelector(
+                'input[name="technical_event"]:checked'
+            );
+
+        const nonTechnicalEvent =
+            document.querySelector(
+                'input[name="nontechnical_event"]:checked'
+            );
+
+
+        if (!technicalEvent && !nonTechnicalEvent) {
+
+            alert(
+                "Please select at least one event."
+            );
+
+            return false;
+
+        }
+
+
+
+        /* ---------------------------------------------
+           PAYMENT SCREENSHOT
+        --------------------------------------------- */
+
+        const paymentFile =
+            document.getElementById(
+                "payment_screenshot"
+            ).files[0];
+
+
+        if (!paymentFile) {
+
+            alert(
+                "Please upload your payment screenshot."
+            );
+
+            return false;
+
+        }
+
+
+        /* ---------------------------------------------
+           FILE SIZE
+           MAXIMUM = 10 MB
+        --------------------------------------------- */
+
+        const maxSize =
+            10 * 1024 * 1024;
+
+
+        if (paymentFile.size > maxSize) {
+
+            alert(
+                "Payment screenshot must be less than 10 MB."
+            );
+
+            return false;
+
+        }
+
+
+        /* ---------------------------------------------
+           FILE TYPE
+        --------------------------------------------- */
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/webp"
+        ];
+
+
+        if (!allowedTypes.includes(paymentFile.type)) {
+
+            alert(
+                "Only JPG, JPEG, PNG or WEBP images are allowed."
+            );
+
+            return false;
+
+        }
+
+
+
+        /* ---------------------------------------------
+           TRANSACTION ID
+        --------------------------------------------- */
+
+        const transactionId =
+            document.getElementById(
+                "transaction_id"
+            ).value.trim();
+
+
+        if (transactionId.length < 4) {
+
+            alert(
+                "Please enter a valid transaction ID."
+            );
+
+            return false;
+
+        }
+
+
+
+        /* ---------------------------------------------
+           PREVENT DOUBLE SUBMISSION
+        --------------------------------------------- */
+
+        const submitButton =
+            document.getElementById(
+                "submitButton"
+            );
+
+
+        submitButton.disabled = true;
+
+        submitButton.innerText =
+            "Submitting...";
+
+
+        return true;
+
+    }
+
+
+
+    /* =========================================================
+       PAYMENT SCREENSHOT PREVIEW
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const fileInput =
+                document.getElementById(
+                    "payment_screenshot"
+                );
+
+            const preview =
+                document.getElementById(
+                    "filePreview"
+                );
+
+            const previewImage =
+                document.getElementById(
+                    "previewImage"
+                );
+
+            const fileName =
+                document.getElementById(
+                    "fileName"
+                );
+
+            const fileSize =
+                document.getElementById(
+                    "fileSize"
+                );
+
+
+            fileInput.addEventListener(
+                "change",
+                function () {
+
+                    const file =
+                        this.files[0];
+
+
+                    if (!file) {
+
+                        preview.style.display =
+                            "none";
+
+                        return;
+
+                    }
+
+
+                    const maxSize =
+                        10 * 1024 * 1024;
+
+
+                    if (file.size > maxSize) {
+
+                        alert(
+                            "File size cannot exceed 10 MB."
+                        );
+
+                        this.value = "";
+
+                        preview.style.display =
+                            "none";
+
+                        return;
+
+                    }
+
+
+                    fileName.innerText =
+                        file.name;
+
+
+                    fileSize.innerText =
+                        (
+                            file.size / 1024 / 1024
+                        ).toFixed(2)
+                        + " MB";
+
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload =
+                        function (event) {
+
+                            previewImage.src =
+                                event.target.result;
+
+                            preview.style.display =
+                                "flex";
+
+                        };
+
+
+                    reader.readAsDataURL(file);
+
+                }
+
+            );
+
+        }
+
+    );
+
+</script>
+
 {% endblock %}
