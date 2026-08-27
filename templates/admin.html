@@ -405,6 +405,69 @@ Admin Dashboard | B'ELITEZ 2K26
     }
 
 
+
+    .payment-thumb {
+        width: 58px;
+        height: 58px;
+        object-fit: cover;
+        border-radius: 9px;
+        border: 1px solid #d9e1ea;
+        display: block;
+        background: #f8fafc;
+    }
+
+    .payment-thumb:hover {
+        transform: scale(1.05);
+    }
+
+    .payment-link {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        color: #087f8c;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .status-registered {
+        background: #ecfdf3;
+        color: #027a48;
+    }
+
+    .status-pending {
+        background: #fffaeb;
+        color: #b54708;
+    }
+
+    .status-paid,
+    .status-verified,
+    .status-approved {
+        background: #ecfdf3;
+        color: #027a48;
+    }
+
+    .status-rejected,
+    .status-cancelled {
+        background: #fef3f2;
+        color: #b42318;
+    }
+
+    .status-other {
+        background: #f2f4f7;
+        color: #344054;
+    }
+
     /* =========================
    MOBILE
 ========================= */
@@ -514,7 +577,7 @@ Admin Dashboard | B'ELITEZ 2K26
             <div class="stat-card">
 
                 <span class="stat-number" id="totalCount">
-                    {{ registrations|length }}
+                    {{ total_registrations }}
                 </span>
 
                 <span class="stat-label">
@@ -795,6 +858,55 @@ Admin Dashboard | B'ELITEZ 2K26
             </div>
 
 
+            <!-- PAYMENT STATUS -->
+            <div class="filter-group">
+
+                <label for="paymentStatusFilter">
+                    Payment Status
+                </label>
+
+                <select id="paymentStatusFilter">
+
+                    <option value="">
+                        All Payment Status
+                    </option>
+
+                    {% for payment_status in payment_statuses %}
+                    <option value="{{ payment_status }}" {% if current_filters.payment_status==payment_status
+                        %}selected{% endif %}>
+                        {{ payment_status }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- REGISTRATION STATUS -->
+            <div class="filter-group">
+
+                <label for="statusFilter">
+                    Registration Status
+                </label>
+
+                <select id="statusFilter">
+
+                    <option value="">
+                        All Registration Status
+                    </option>
+
+                    {% for status in statuses %}
+                    <option value="{{ status }}" {% if current_filters.status==status %}selected{% endif %}>
+                        {{ status }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
         </div>
 
 
@@ -853,28 +965,21 @@ Admin Dashboard | B'ELITEZ 2K26
                     <tr>
 
                         <th>ID</th>
-
                         <th>Name</th>
-
                         <th>Department</th>
-
                         <th>Year</th>
-
                         <th>College</th>
-
                         <th>Contact</th>
-
                         <th>Email</th>
-
-                        <th>Technical</th>
-
-                        <th>Non-Technical</th>
-
+                        <th>Technical Event</th>
+                        <th>Non-Technical Event</th>
                         <th>Workshop</th>
-
                         <th>Food</th>
-
-                        <th>Registered</th>
+                        <th>Transaction ID</th>
+                        <th>Payment Screenshot</th>
+                        <th>Payment Status</th>
+                        <th>Status</th>
+                        <th>Registered At</th>
 
                     </tr>
 
@@ -888,76 +993,57 @@ Admin Dashboard | B'ELITEZ 2K26
 
                     <tr class="registration-row">
 
+                        <td>{{ r.registration_id or r.id or '' }}</td>
+                        <td>{{ r.name or '' }}</td>
+                        <td>{{ r.department or '' }}</td>
+                        <td>{{ r.year or '' }}</td>
+                        <td>{{ r.college or '' }}</td>
+                        <td>{{ r.contact or '' }}</td>
+                        <td>{{ r.email or '' }}</td>
+                        <td>{{ r.technical_event or '' }}</td>
+                        <td>{{ r.nontechnical_event or '' }}</td>
+                        <td>{{ r.workshop or '' }}</td>
+                        <td>{{ r.food or '' }}</td>
+                        <td>{{ r.transaction_id or '' }}</td>
 
                         <td>
-                            {{ r.id }}
-                        </td>
-
-
-                        <td>
-                            {{ r.name or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.department or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.year or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.college or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.contact or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.email or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.technical_event or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.nontechnical_event or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.workshop or '' }}
-                        </td>
-
-
-                        <td>
-                            {{ r.food or '' }}
-                        </td>
-
-
-                        <td>
-
-                            {% if r.registered_at %}
-
-                            {{ r.registered_at }}
-
+                            {% if r.payment_screenshot %}
+                            <a class="payment-link"
+                                href="{{ url_for('admin_payment_screenshot', registration_id=r.registration_id or r.id) }}"
+                                target="_blank" rel="noopener noreferrer">
+                                <img class="payment-thumb"
+                                    src="{{ url_for('admin_payment_screenshot', registration_id=r.registration_id or r.id) }}"
+                                    alt="Payment screenshot">
+                                <span>View</span>
+                            </a>
                             {% else %}
-
                             -
-
                             {% endif %}
-
                         </td>
 
+                        <td>
+                            {% set payment_status = r.payment_status or 'pending' %}
+                            <span
+                                class="status-badge {% if payment_status|lower in ['paid','verified','approved'] %}status-paid{% elif payment_status|lower == 'pending' %}status-pending{% elif payment_status|lower in ['rejected','cancelled'] %}status-rejected{% else %}status-other{% endif %}">
+                                {{ payment_status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {% set registration_status = r.status or 'registered' %}
+                            <span
+                                class="status-badge {% if registration_status|lower == 'registered' %}status-registered{% elif registration_status|lower in ['rejected','cancelled'] %}status-rejected{% else %}status-other{% endif %}">
+                                {{ registration_status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {% if r.registered_at %}
+                            {{ r.registered_at }}
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
 
                     </tr>
 
@@ -1022,6 +1108,12 @@ Admin Dashboard | B'ELITEZ 2K26
     const foodFilter =
         document.getElementById("foodFilter");
 
+    const paymentStatusFilter =
+        document.getElementById("paymentStatusFilter");
+
+    const statusFilter =
+        document.getElementById("statusFilter");
+
 
     /* ============================================================
        TABLE ROWS
@@ -1080,6 +1172,16 @@ Admin Dashboard | B'ELITEZ 2K26
                 .trim()
                 .toLowerCase();
 
+        const paymentStatus =
+            paymentStatusFilter.value
+                .trim()
+                .toLowerCase();
+
+        const status =
+            statusFilter.value
+                .trim()
+                .toLowerCase();
+
 
         let visibleCount = 0;
 
@@ -1104,7 +1206,11 @@ Admin Dashboard | B'ELITEZ 2K26
                 8 = Non-Technical
                 9 = Workshop
                 10 = Food
-                11 = Registered
+                11 = Transaction ID
+                12 = Payment Screenshot
+                13 = Payment Status
+                14 = Status
+                15 = Registered
             */
 
 
@@ -1144,6 +1250,16 @@ Admin Dashboard | B'ELITEZ 2K26
 
             const rowFood =
                 cells[10].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowPaymentStatus =
+                cells[13].innerText
+                    .trim()
+                    .toLowerCase();
+
+            const rowStatus =
+                cells[14].innerText
                     .trim()
                     .toLowerCase();
 
@@ -1187,6 +1303,14 @@ Admin Dashboard | B'ELITEZ 2K26
                 !food ||
                 rowFood === food;
 
+            const matchesPaymentStatus =
+                !paymentStatus ||
+                rowPaymentStatus === paymentStatus;
+
+            const matchesStatus =
+                !status ||
+                rowStatus === status;
+
 
             const visible =
                 matchesSearch &&
@@ -1196,7 +1320,9 @@ Admin Dashboard | B'ELITEZ 2K26
                 matchesTechnical &&
                 matchesNonTechnical &&
                 matchesWorkshop &&
-                matchesFood;
+                matchesFood &&
+                matchesPaymentStatus &&
+                matchesStatus;
 
 
             row.style.display =
@@ -1245,7 +1371,9 @@ Admin Dashboard | B'ELITEZ 2K26
         technicalFilter,
         nontechnicalFilter,
         workshopFilter,
-        foodFilter
+        foodFilter,
+        paymentStatusFilter,
+        statusFilter
     ].forEach(element => {
 
         element.addEventListener(
@@ -1283,6 +1411,10 @@ Admin Dashboard | B'ELITEZ 2K26
 
         foodFilter.value = "";
 
+        paymentStatusFilter.value = "";
+
+        statusFilter.value = "";
+
 
         applyFilters();
 
@@ -1317,7 +1449,7 @@ Admin Dashboard | B'ELITEZ 2K26
 
 
         csv +=
-            "ID,Name,Department,Year,College,Contact,Email,Technical Event,Non-Technical Event,Workshop,Food,Registered\n";
+            "ID,Name,Department,Year,College,Contact,Email,Technical Event,Non-Technical Event,Workshop,Food,Transaction ID,Payment Screenshot,Payment Status,Status,Registered\n";
 
 
         visibleRows.forEach(row => {

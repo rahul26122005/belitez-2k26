@@ -4,6 +4,174 @@
 
 {% block content %}
 
+<style>
+    .paymentInstruction {
+        padding: 18px;
+        margin-bottom: 18px;
+        border-radius: 12px;
+        background: #f4f8fb;
+        border: 1px solid #dce6ee;
+    }
+
+    .paymentInstruction strong {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .paymentInstruction p {
+        margin: 0;
+        color: #667085;
+        font-size: 14px;
+    }
+
+    .paymentCards {
+        display: grid;
+        grid-template-columns: repeat(2,
+                minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 20px;
+    }
+
+    .paymentCard {
+        padding: 16px;
+        border: 1px solid #dce3ea;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .paymentCardTitle {
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .paymentImageWrapper {
+        background: #f5f7fb;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .paymentQR {
+        width: 100%;
+        max-width: 390px;
+        height: auto;
+        display: block;
+        margin: auto;
+    }
+
+    .uploadCard,
+    .transactionCard {
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid #dce3ea;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .uploadCard label,
+    .transactionCard label {
+        font-weight: 800;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .requiredStar {
+        color: #d92d20;
+    }
+
+    .uploadHint,
+    .transactionCard small {
+        color: #667085;
+        font-size: 12px;
+    }
+
+    .fileUploadWrapper {
+        margin-top: 12px;
+    }
+
+    .fileUploadWrapper input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px dashed #b8c5d1;
+        border-radius: 10px;
+        background: #f8fafc;
+    }
+
+    .filePreview {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 10px;
+        background: #f5f8fa;
+        border: 1px solid #e1e7ed;
+    }
+
+    .filePreview img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #d0d5dd;
+    }
+
+    .filePreview strong {
+        display: block;
+        word-break: break-word;
+    }
+
+    .filePreview small {
+        color: #667085;
+    }
+
+    .contactSection {
+        display: grid;
+        grid-template-columns: repeat(2,
+                minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .contactCard {
+        padding: 18px;
+        border: 1px solid #dce3ea;
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .contactCard h3 {
+        margin-top: 0;
+    }
+
+    .contactCard p {
+        color: #667085;
+        font-size: 14px;
+    }
+
+    .whatsappLink,
+    .emailLink {
+        font-weight: 700;
+    }
+
+    @media (max-width: 700px) {
+
+        .paymentCards,
+        .contactSection {
+            grid-template-columns: 1fr;
+        }
+
+        .filePreview {
+            align-items: flex-start;
+        }
+
+    }
+</style>
+
+
+<!-- ========================================================= -->
+<!-- HERO -->
+<!-- ========================================================= -->
+
 <section class="formHero">
 
     <div class="formHeroInner">
@@ -35,33 +203,35 @@
             Registration
         </h1>
 
-        <p>
-            Complete the form from any phone, tablet or computer.
-        </p>
 
     </div>
 
 </section>
 
 
+<!-- ========================================================= -->
+<!-- REGISTRATION FORM -->
+<!-- ========================================================= -->
+
 <form method="POST" class="form" enctype="multipart/form-data" onsubmit="return validateRegistration()">
 
 
-    <!-- ========================================================= -->
-    <!-- IMPORTANT NOTICE -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- NOTICE -->
+    <!-- ===================================================== -->
 
     <div class="noticeText">
 
         <b>Important:</b>
+
         Accommodation will not be provided.
 
     </div>
 
 
-    <!-- ========================================================= -->
-    <!-- 01 PARTICIPANT DETAILS -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- 01 PARTICIPANT -->
+    <!-- ===================================================== -->
 
     <section>
 
@@ -123,19 +293,23 @@
         </div>
 
 
-        <!-- YEAR -->
-
         <label>
             Year *
         </label>
 
         <div class="choices">
 
-            {% for y in ['1st YEAR', '2nd YEAR', '3rd YEAR', 'FINAL YEAR'] %}
+            {% for y in [
+            '1st YEAR',
+            '2nd YEAR',
+            '3rd YEAR',
+            'FINAL YEAR'
+            ] %}
 
             <label>
 
-                <input type="radio" required name="year" value="{{ y }}" {% if form.get('year')==y %}checked{% endif %}>
+                <input type="radio" required name="year" value="{{ y }}" {% if form.get('year')==y %} checked {% endif
+                    %}>
 
                 {{ y }}
 
@@ -148,17 +322,16 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
-    <!-- 02 TECHNICAL EVENT -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- 02 TECHNICAL -->
+    <!-- ===================================================== -->
 
     <section>
 
         <div class="sectionTitleRow">
 
             <h2>
-                02 • Technical Event
+                02 • Technical Event *
             </h2>
 
             <span class="sectionHint">
@@ -170,12 +343,14 @@
 
         <div class="selectgrid">
 
-            {% for e in events if e.category == "Technical" %}
+            {% for e in events
+            if e.category == "Technical"
+            %}
 
             <label class="eventChoice">
 
-                <input type="radio" name="technical_event" value="{{ e.name }}" {% if
-                    form.get('technical_event')==e.name %}checked{% endif %}>
+                <input type="radio" required name="technical_event" value="{{ e.name }}" {% if
+                    form.get('technical_event')==e.name %} checked {% endif %}>
 
                 <span class="eventChoiceIcon">
                     {{ e.icon }}
@@ -188,7 +363,6 @@
                 <small>
                     {{ e.short }}
                 </small>
-
 
                 <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
                     onclick="event.stopPropagation();">
@@ -204,10 +378,9 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
-    <!-- 03 NON TECHNICAL EVENT -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- 03 NON TECHNICAL -->
+    <!-- ===================================================== -->
 
     <section>
 
@@ -226,12 +399,14 @@
 
         <div class="selectgrid">
 
-            {% for e in events if e.category == "Non-Technical" %}
+            {% for e in events
+            if e.category == "Non-Technical"
+            %}
 
             <label class="eventChoice">
 
                 <input type="radio" name="nontechnical_event" value="{{ e.name }}" {% if
-                    form.get('nontechnical_event')==e.name %}checked{% endif %}>
+                    form.get('nontechnical_event')==e.name %} checked {% endif %}>
 
                 <span class="eventChoiceIcon">
                     {{ e.icon }}
@@ -244,7 +419,6 @@
                 <small>
                     {{ e.short }}
                 </small>
-
 
                 <a class="exploreMini" href="{{ url_for('detail', slug=e.slug) }}" target="_blank"
                     onclick="event.stopPropagation();">
@@ -260,10 +434,9 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
-    <!-- 04 WORKSHOP & FOOD -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- 04 WORKSHOP / FOOD -->
+    <!-- ===================================================== -->
 
     <section>
 
@@ -282,9 +455,6 @@
 
         <div class="twocol">
 
-
-            <!-- WORKSHOP -->
-
             <div>
 
                 <label>
@@ -295,17 +465,16 @@
 
                     <label>
 
-                        <input required type="radio" name="workshop" value="YES" {% if form.get('workshop')=='YES'
-                            %}checked{% endif %}>
+                        <input required type="radio" name="workshop" value="YES" {% if form.get('workshop')=='YES' %}
+                            checked {% endif %}>
 
                         YES
 
                     </label>
 
-
                     <label>
 
-                        <input type="radio" name="workshop" value="NO" {% if form.get('workshop')=='NO' %}checked{%
+                        <input type="radio" name="workshop" value="NO" {% if form.get('workshop')=='NO' %} checked {%
                             endif %}>
 
                         NO
@@ -317,9 +486,6 @@
             </div>
 
 
-
-            <!-- FOOD -->
-
             <div>
 
                 <label>
@@ -330,17 +496,16 @@
 
                     <label>
 
-                        <input required type="radio" name="food" value="VEG" {% if form.get('food')=='VEG' %}checked{%
+                        <input required type="radio" name="food" value="VEG" {% if form.get('food')=='VEG' %} checked {%
                             endif %}>
 
                         VEG
 
                     </label>
 
-
                     <label>
 
-                        <input type="radio" name="food" value="NON-VEG" {% if form.get('food')=='NON-VEG' %}checked{%
+                        <input type="radio" name="food" value="NON-VEG" {% if form.get('food')=='NON-VEG' %} checked {%
                             endif %}>
 
                         NON-VEG
@@ -356,10 +521,9 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
     <!-- 05 PAYMENT -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
 
     <section>
 
@@ -376,8 +540,6 @@
         </div>
 
 
-        <!-- PAYMENT INFORMATION -->
-
         <div class="paymentInstruction">
 
             <strong>
@@ -385,78 +547,85 @@
             </strong>
 
             <p>
-                Please scan any one of the QR codes below using your preferred UPI application.
+                Please scan the QR codes below
+                using your preferred UPI application.
             </p>
 
         </div>
 
 
+        <!-- QR CODES -->
 
-        <!-- ===================================================== -->
-        <!-- UPI QR CODE 1 -->
-        <!-- ===================================================== -->
+        <div class="paymentCards">
 
-        <div class="paymentCard">
 
-            <div class="paymentCardTitle">
-                Payment QR – 1
+            <div class="paymentCard">
+
+                <div class="paymentCardTitle">
+                    Payment QR – 1
+                </div>
+
+                <div class="paymentImageWrapper">
+
+                    <img src="{{ url_for(
+                            'static',
+                            filename='images/qr_code_bala.jpeg'
+                        ) }}" alt="Payment QR Code 1" class="paymentQR">
+
+                </div>
+
             </div>
 
-            <div class="paymentImageWrapper">
 
-                <img src="{{ url_for('static', filename='images/payment_qr_1.png') }}" alt="Payment QR Code 1"
-                    class="paymentQR">
+            <div class="paymentCard">
+
+                <div class="paymentCardTitle">
+                    Payment QR – 2
+                </div>
+
+                <div class="paymentImageWrapper">
+
+                    <img src="{{ url_for(
+                                        'static',
+                                        filename='images/qr_code_100L.jpeg'
+                                    ) }}" alt="Payment QR Code 2" class="paymentQR">
+
+                </div>
 
             </div>
+
 
         </div>
 
 
-
-        <!-- ===================================================== -->
-        <!-- UPI QR CODE 2 -->
-        <!-- ===================================================== -->
-
-        <div class="paymentCard">
-
-            <div class="paymentCardTitle">
-                Payment QR – 2
-            </div>
-
-            <div class="paymentImageWrapper">
-
-                <img src="{{ url_for('static', filename='images/payment_qr_2.png') }}" alt="Payment QR Code 2"
-                    class="paymentQR">
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ===================================================== -->
-        <!-- PAYMENT SCREENSHOT UPLOAD -->
-        <!-- ===================================================== -->
+        <!-- PAYMENT SCREENSHOT -->
 
         <div class="uploadCard">
 
             <label for="payment_screenshot">
 
                 Upload payment screenshot
-                <span class="requiredStar">*</span>
+
+                <span class="requiredStar">
+                    *
+                </span>
 
             </label>
 
-
             <p class="uploadHint">
-                Upload 1 supported file: image. Max. 10 MB.
+                Upload 1 supported file:
+                JPG, JPEG, PNG or WEBP.
+                Maximum 10 MB.
             </p>
-
 
             <div class="fileUploadWrapper">
 
-                <input type="file" id="payment_screenshot" name="payment_screenshot"
-                    accept="image/png,image/jpeg,image/jpg,image/webp" required>
+                <input type="file" id="payment_screenshot" name="payment_screenshot" accept="
+                        image/png,
+                        image/jpeg,
+                        image/jpg,
+                        image/webp
+                    " required>
 
             </div>
 
@@ -478,26 +647,26 @@
         </div>
 
 
-
-        <!-- ===================================================== -->
         <!-- TRANSACTION ID -->
-        <!-- ===================================================== -->
 
         <div class="transactionCard">
 
             <label for="transaction_id">
 
                 TRANSACTION ID
-                <span class="requiredStar">*</span>
+
+                <span class="requiredStar">
+                    *
+                </span>
 
             </label>
-
 
             <input type="text" id="transaction_id" name="transaction_id" value="{{ form.get('transaction_id', '') }}"
                 placeholder="Enter your UPI transaction ID" required maxlength="100" autocomplete="off">
 
             <small>
-                Enter the transaction/reference ID shown in your payment app.
+                Enter the transaction/reference ID shown
+                in your payment application.
             </small>
 
         </div>
@@ -505,10 +674,9 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
-    <!-- WHATSAPP + HELP DESK -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
+    <!-- WHATSAPP / HELPDESK -->
+    <!-- ===================================================== -->
 
     <section class="contactSection">
 
@@ -519,17 +687,16 @@
             </h3>
 
             <p>
-                Join our official WhatsApp group for event updates,
-                announcements and important information.
+                Join our official WhatsApp group for event
+                updates, announcements and important information.
             </p>
 
-            <a href="https://chat.whatsapp.com/CedzbVRtuDH7Zt24dq02?mode=ems_wa_t" target="_blank"
+            <a href=" https://chat.whatsapp.com/IVEIFgk4dNh947r5Et4Qul?s=sh&p=a&ilr=0" target="_blank"
                 rel="noopener noreferrer" class="whatsappLink">
                 Join WhatsApp Group →
             </a>
 
         </div>
-
 
 
         <div class="contactCard">
@@ -542,8 +709,8 @@
                 For any queries, contact through the following mail:
             </p>
 
-            <a href="mailto:belitez2k25@gmail.com" class="emailLink">
-                belitez2k25@gmail.com
+            <a href="mailto:belitez2k26@gmail.com" class="emailLink">
+                belitez2k26@gmail.com
             </a>
 
         </div>
@@ -551,10 +718,9 @@
     </section>
 
 
-
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
     <!-- SUBMIT -->
-    <!-- ========================================================= -->
+    <!-- ===================================================== -->
 
     <div class="registrationBottom">
 
@@ -570,7 +736,6 @@
 
         </div>
 
-
         <button class="submit" type="submit" id="submitButton">
             Submit Registration →
         </button>
@@ -580,25 +745,21 @@
 </form>
 
 
-
-<!-- ============================================================= -->
+<!-- ========================================================= -->
 <!-- JAVASCRIPT -->
-<!-- ============================================================= -->
+<!-- ========================================================= -->
 
 <script>
 
     function validateRegistration() {
 
-        const form = document.querySelector(".form");
+        const contact =
+            document.querySelector(
+                'input[name="contact"]'
+            ).value.trim();
 
-        const contact = document.querySelector(
-            'input[name="contact"]'
-        ).value.trim();
 
-
-        /* ---------------------------------------------
-           CONTACT NUMBER VALIDATION
-        --------------------------------------------- */
+        /* CONTACT */
 
         if (!/^[0-9]{10}$/.test(contact)) {
 
@@ -607,41 +768,33 @@
             );
 
             return false;
-
         }
 
 
+        /* EVENT */
 
-        /* ---------------------------------------------
-           EVENT VALIDATION
-        --------------------------------------------- */
-
-        const technicalEvent =
+        const technical =
             document.querySelector(
                 'input[name="technical_event"]:checked'
             );
 
-        const nonTechnicalEvent =
+        const nonTechnical =
             document.querySelector(
                 'input[name="nontechnical_event"]:checked'
             );
 
 
-        if (!technicalEvent && !nonTechnicalEvent) {
+        if (!technical && !nonTechnical) {
 
             alert(
                 "Please select at least one event."
             );
 
             return false;
-
         }
 
 
-
-        /* ---------------------------------------------
-           PAYMENT SCREENSHOT
-        --------------------------------------------- */
+        /* PAYMENT FILE */
 
         const paymentFile =
             document.getElementById(
@@ -656,14 +809,10 @@
             );
 
             return false;
-
         }
 
 
-        /* ---------------------------------------------
-           FILE SIZE
-           MAXIMUM = 10 MB
-        --------------------------------------------- */
+        /* FILE SIZE */
 
         const maxSize =
             10 * 1024 * 1024;
@@ -672,91 +821,84 @@
         if (paymentFile.size > maxSize) {
 
             alert(
-                "Payment screenshot must be less than 10 MB."
+                "Payment screenshot cannot exceed 10 MB."
             );
 
             return false;
-
         }
 
 
-        /* ---------------------------------------------
-           FILE TYPE
-        --------------------------------------------- */
+        /* FILE TYPE */
 
         const allowedTypes = [
+
             "image/jpeg",
             "image/jpg",
             "image/png",
             "image/webp"
+
         ];
 
 
-        if (!allowedTypes.includes(paymentFile.type)) {
+        if (
+            !allowedTypes.includes(
+                paymentFile.type
+            )
+        ) {
 
             alert(
                 "Only JPG, JPEG, PNG or WEBP images are allowed."
             );
 
             return false;
-
         }
 
 
+        /* TRANSACTION */
 
-        /* ---------------------------------------------
-           TRANSACTION ID
-        --------------------------------------------- */
-
-        const transactionId =
+        const transaction =
             document.getElementById(
                 "transaction_id"
             ).value.trim();
 
 
-        if (transactionId.length < 4) {
+        if (transaction.length < 4) {
 
             alert(
                 "Please enter a valid transaction ID."
             );
 
             return false;
-
         }
 
 
+        /* PREVENT DOUBLE SUBMISSION */
 
-        /* ---------------------------------------------
-           PREVENT DOUBLE SUBMISSION
-        --------------------------------------------- */
-
-        const submitButton =
+        const button =
             document.getElementById(
                 "submitButton"
             );
 
 
-        submitButton.disabled = true;
+        button.disabled = true;
 
-        submitButton.innerText =
-            "Submitting...";
+        button.innerText =
+            "Uploading & Submitting...";
 
 
         return true;
-
     }
 
 
-
     /* =========================================================
-       PAYMENT SCREENSHOT PREVIEW
+       IMAGE PREVIEW
     ========================================================= */
 
     document.addEventListener(
         "DOMContentLoaded",
         function () {
 
-            const fileInput =
+            const input =
                 document.getElementById(
                     "payment_screenshot"
                 );
@@ -766,7 +908,7 @@
                     "filePreview"
                 );
 
-            const previewImage =
+            const image =
                 document.getElementById(
                     "previewImage"
                 );
@@ -782,7 +924,7 @@
                 );
 
 
-            fileInput.addEventListener(
+            input.addEventListener(
                 "change",
                 function () {
 
@@ -796,7 +938,6 @@
                             "none";
 
                         return;
-
                     }
 
 
@@ -804,7 +945,9 @@
                         10 * 1024 * 1024;
 
 
-                    if (file.size > maxSize) {
+                    if (
+                        file.size > maxSize
+                    ) {
 
                         alert(
                             "File size cannot exceed 10 MB."
@@ -816,7 +959,6 @@
                             "none";
 
                         return;
-
                     }
 
 
@@ -826,7 +968,9 @@
 
                     fileSize.innerText =
                         (
-                            file.size / 1024 / 1024
+                            file.size /
+                            1024 /
+                            1024
                         ).toFixed(2)
                         + " MB";
 
@@ -838,7 +982,7 @@
                     reader.onload =
                         function (event) {
 
-                            previewImage.src =
+                            image.src =
                                 event.target.result;
 
                             preview.style.display =
@@ -847,14 +991,14 @@
                         };
 
 
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(
+                        file
+                    );
 
                 }
-
             );
 
         }
-
     );
 
 </script>

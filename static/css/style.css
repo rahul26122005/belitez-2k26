@@ -631,13 +631,14 @@ nav a:hover {
 
 .detail ul {
     list-style: none;
-    padding: 0
+    padding: 0;
+    color: black
 }
 
 .detail li {
     padding: 14px 0;
     border-bottom: 1px solid #dce4ed;
-    color: #506074;
+    color: #000000;
     font-size: 12px;
     line-height: 1.6
 }
@@ -1364,4 +1365,250 @@ footer>small {
     .eventChoice .exploreMini {
         font-size: 8px;
     }
+}
+
+/* =========================================================
+   PAYMENT SECTION
+========================================================= */
+
+.paymentInstruction {
+    background: #f7f9fc;
+    border: 1px solid #e1e5eb;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.paymentInstruction strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.paymentInstruction p {
+    margin: 0;
+    color: #555;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   PAYMENT CARD
+========================================================= */
+
+.paymentCard {
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    background: #ffffff;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.paymentCardTitle {
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.paymentImageWrapper {
+    padding: 18px;
+    background: #f5f7fb;
+    text-align: center;
+}
+
+.paymentQR {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   UPLOAD CARD
+========================================================= */
+
+.uploadCard {
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 20px;
+    background: #ffffff;
+}
+
+.uploadCard>label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.requiredStar {
+    color: #d93025;
+}
+
+.uploadHint {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 14px 0;
+}
+
+.fileUploadWrapper input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d8dce2;
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   FILE PREVIEW
+========================================================= */
+
+.filePreview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+    padding: 12px;
+    background: #f7f9fc;
+    border: 1px solid #e0e4e8;
+    border-radius: 7px;
+}
+
+.filePreview img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.filePreview strong {
+    display: block;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+.filePreview small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+}
+
+
+/* =========================================================
+   TRANSACTION ID
+========================================================= */
+
+.transactionCard {
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 16px;
+    background: #ffffff;
+}
+
+.transactionCard label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.transactionCard input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: none;
+    border-bottom: 1px solid #cfd4da;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+}
+
+.transactionCard input:focus {
+    border-bottom: 2px solid #333;
+}
+
+.transactionCard small {
+    display: block;
+    margin-top: 9px;
+    color: #777;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   WHATSAPP / HELPDESK
+========================================================= */
+
+.contactSection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.contactCard {
+    border: 1px solid #dfe3e8;
+    border-radius: 8px;
+    padding: 18px;
+    background: #ffffff;
+}
+
+.contactCard h3 {
+    margin: 0 0 10px 0;
+    font-size: 15px;
+}
+
+.contactCard p {
+    margin: 0 0 12px 0;
+    color: #555;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.whatsappLink,
+.emailLink {
+    color: #1267d6;
+    text-decoration: underline;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.whatsappLink:hover,
+.emailLink:hover {
+    color: #084a9c;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .contactSection {
+        grid-template-columns: 1fr;
+    }
+
+    .paymentImageWrapper {
+        padding: 12px;
+    }
+
+    .paymentQR {
+        max-width: 100%;
+    }
+
+    .filePreview {
+        align-items: flex-start;
+    }
+
 }

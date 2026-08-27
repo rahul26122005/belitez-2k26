@@ -3,18 +3,27 @@ import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-firebase_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "firebase_service_account.json")
 
-if not firebase_json:
-    raise RuntimeError("FIREBASE_SERVICE_ACCOUNT environment variable is not set.")
+if not os.path.exists(SERVICE_ACCOUNT_FILE):
+    raise FileNotFoundError(
+        f"Firebase service account file not found:\n{SERVICE_ACCOUNT_FILE}"
+    )
 
 try:
-    firebase_config = json.loads(firebase_json)
+    with open(SERVICE_ACCOUNT_FILE, "r", encoding="utf-8") as f:
+        service_account_info = json.load(f)
 except json.JSONDecodeError as e:
-    raise RuntimeError(f"FIREBASE_SERVICE_ACCOUNT contains invalid JSON: {e}")
+    raise RuntimeError(f"firebase_service_account.json contains invalid JSON: {e}")
 
-if not firebase_admin._apps:
-    cred = credentials.Certificate(firebase_config)
-    firebase_admin.initialize_app(cred)
+try:
+    cred = credentials.Certificate(service_account_info)
 
-db = firestore.client()
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(cred)
+
+    db = firestore.client()
+
+except Exception as e:
+    raise RuntimeError(f"Firebase initialization failed: {e}")
