@@ -12,8 +12,6 @@ from flask import (
 
 from firebase_config import db
 
-import firebase_admin
-from firebase_admin import storage
 
 from datetime import datetime, timezone
 from functools import wraps
@@ -33,7 +31,8 @@ app = Flask(__name__)
 
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "belitez-2k26")
 
-# Maximum request size = 10 MB
+# Maximum HTTP request size = 10 MB.
+# Actual payment image stored in Firestore is limited to 800 KB.
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
 
@@ -59,10 +58,17 @@ ALLOWED_PAYMENT_MIME_TYPES = {
 
 
 # ============================================================
-# FIREBASE STORAGE
+# FIRESTORE PAYMENT IMAGE SETTINGS
+#
+# Payment screenshots are stored directly INSIDE the same
+# Firestore registration document as a bytes field.
+#
+# Firestore has a 1 MiB document limit, so the uploaded image
+# is limited to 800 KB to leave room for the other registration
+# fields.
 # ============================================================
 
-PAYMENT_STORAGE_FOLDER = "BELITEZ_2K26/payment_screenshots"
+MAX_FIRESTORE_IMAGE_SIZE = 800 * 1024
 
 
 # ============================================================
@@ -284,6 +290,16 @@ def allowed_payment_file(file):
 
 
 def upload_payment_screenshot(payment_file, registration_id):
+    """
+    Validate the payment screenshot and return information that can
+    be stored directly in the SAME Firestore document.
+
+    No Firebase Storage bucket is used.
+    No local file is created.
+
+    Firestore stores the actual image as a bytes field:
+        payment_screenshot["image_bytes"]
+    """
 
     if not allowed_payment_file(payment_file):
         raise ValueError("Only JPG, JPEG, PNG and WEBP images are allowed.")
@@ -293,75 +309,58 @@ def upload_payment_screenshot(payment_file, registration_id):
     # --------------------------------------------------------
 
     payment_file.seek(0, os.SEEK_END)
-
     file_size = payment_file.tell()
-
     payment_file.seek(0)
 
     if file_size <= 0:
         raise ValueError("The payment screenshot is empty.")
 
-    if file_size > MAX_PAYMENT_FILE_SIZE:
-        raise ValueError("Payment screenshot cannot exceed 10 MB.")
+    # The HTTP request can still be up to 10 MB, but the actual
+    # image stored in Firestore must remain below the document limit.
+    if file_size > MAX_FIRESTORE_IMAGE_SIZE:
+        raise ValueError(
+            "Payment screenshot must be 800 KB or smaller because "
+            "the image is stored directly inside Firestore."
+        )
 
     # --------------------------------------------------------
-    # ORIGINAL FILE
+    # READ IMAGE INTO MEMORY
+    # --------------------------------------------------------
+
+    image_bytes = payment_file.read()
+
+    if not image_bytes:
+        raise ValueError("The payment screenshot could not be read.")
+
+    if len(image_bytes) > MAX_FIRESTORE_IMAGE_SIZE:
+        raise ValueError(
+            "Payment screenshot must be 800 KB or smaller because "
+            "the image is stored directly inside Firestore."
+        )
+
+    # --------------------------------------------------------
+    # FILE INFORMATION
     # --------------------------------------------------------
 
     original_filename = payment_file.filename
-
-    extension = original_filename.rsplit(".", 1)[1].lower()
-
-    # --------------------------------------------------------
-    # UNIQUE STORAGE FILE
-    # --------------------------------------------------------
-
-    unique_filename = f"{registration_id}_" f"{uuid.uuid4().hex}." f"{extension}"
-
-    storage_path = f"{PAYMENT_STORAGE_FOLDER}/" f"{unique_filename}"
+    content_type = payment_file.content_type or "application/octet-stream"
 
     # --------------------------------------------------------
-    # FIREBASE STORAGE
+    # FIRESTORE PAYMENT IMAGE DATA
     # --------------------------------------------------------
-
-    bucket = storage.bucket()
-
-    blob = bucket.blob(storage_path)
-
+    #
     # IMPORTANT:
-    # Direct upload from Flask memory.
-    # Nothing is saved locally.
-
-    payment_file.seek(0)
-
-    blob.upload_from_file(
-        payment_file,
-        content_type=(payment_file.content_type or "application/octet-stream"),
-    )
-
-    # --------------------------------------------------------
-    # STORAGE METADATA
-    # --------------------------------------------------------
-
-    blob.metadata = {
-        "registration_id": registration_id,
-        "original_filename": original_filename,
-        "uploaded_for": "BELITEZ_2K26",
-    }
-
-    blob.patch()
-
-    # --------------------------------------------------------
-    # RETURN STORAGE INFORMATION
+    # image_bytes is stored directly in Firestore.
+    # There is no storage_path, bucket, blob, or Firebase Storage.
     # --------------------------------------------------------
 
     return {
-        "storage_path": storage_path,
         "file_name": original_filename,
-        "stored_file_name": unique_filename,
-        "content_type": payment_file.content_type or "",
-        "size_bytes": file_size,
-        "bucket": bucket.name,
+        "stored_file_name": f"{registration_id}_{uuid.uuid4().hex}",
+        "content_type": content_type,
+        "size_bytes": len(image_bytes),
+        "storage_type": "firestore",
+        "image_bytes": image_bytes,
     }
 
 
@@ -572,12 +571,12 @@ def register():
         # Nested INSIDE the SAME document.
         # ----------------------------------------------------
         "payment_screenshot": {
-            "storage_path": payment_info["storage_path"],
             "file_name": payment_info["file_name"],
             "stored_file_name": payment_info["stored_file_name"],
             "content_type": payment_info["content_type"],
             "size_bytes": payment_info["size_bytes"],
-            "bucket": payment_info["bucket"],
+            "storage_type": "firestore",
+            "image_bytes": payment_info["image_bytes"],
         },
         # ----------------------------------------------------
         # STATUS
@@ -603,24 +602,6 @@ def register():
     except Exception as error:
 
         print("FIRESTORE ERROR:", error)
-
-        # ----------------------------------------------------
-        # Delete Storage file if Firestore fails
-        # ----------------------------------------------------
-
-        try:
-
-            bucket = storage.bucket()
-
-            blob = bucket.blob(payment_info["storage_path"])
-
-            if blob.exists():
-
-                blob.delete()
-
-        except Exception as cleanup_error:
-
-            print("STORAGE CLEANUP ERROR:", cleanup_error)
 
         flash("Registration could not be completed. Please try again.", "error")
 
@@ -750,8 +731,8 @@ def get_all_registrations():
                 "file_name", data.get("payment_screenshot_name", "")
             )
 
-            data["payment_storage_path"] = payment.get(
-                "storage_path", data.get("payment_screenshot_path", "")
+            data["payment_storage_path"] = (
+                "Firestore document" if payment.get("image_bytes") else ""
             )
 
             data["payment_file_type"] = payment.get(
@@ -760,6 +741,11 @@ def get_all_registrations():
 
             data["payment_file_size"] = payment.get(
                 "size_bytes", data.get("payment_screenshot_size", 0)
+            )
+
+            data["payment_storage_type"] = payment.get(
+                "storage_type",
+                "firestore" if payment.get("image_bytes") else "",
             )
 
             registrations.append(data)
@@ -1143,57 +1129,46 @@ def admin():
 @app.route("/admin/payment/<registration_id>")
 @admin_required
 def admin_payment(registration_id):
+    """
+    Retrieve the payment screenshot directly from the same
+    Firestore registration document.
+
+    No Firebase Storage bucket is used.
+    """
 
     document = db.collection("Registrations").document(registration_id).get()
 
     if not document.exists:
-
         abort(404)
 
     data = document.to_dict()
-
     payment = data.get("payment_screenshot", {})
 
     if not isinstance(payment, dict):
-
         payment = {}
 
-    storage_path = payment.get("storage_path", data.get("payment_screenshot_path", ""))
+    image_bytes = payment.get("image_bytes")
 
-    if not storage_path:
-
+    if not image_bytes:
         abort(404)
 
     try:
+        if not isinstance(image_bytes, bytes):
+            image_bytes = bytes(image_bytes)
 
-        bucket = storage.bucket()
-
-        blob = bucket.blob(storage_path)
-
-        if not blob.exists():
-
-            abort(404)
-
-        # ----------------------------------------------------
-        # Download into memory
-        #
-        # Not saved to disk.
-        # ----------------------------------------------------
-
-        image_bytes = blob.download_as_bytes()
-
-        content_type = payment.get("content_type") or blob.content_type or "image/jpeg"
+        content_type = payment.get("content_type") or "image/jpeg"
 
         return send_file(
             io.BytesIO(image_bytes),
             mimetype=content_type,
-            download_name=payment.get("file_name", "payment_screenshot"),
+            download_name=payment.get(
+                "file_name",
+                "payment_screenshot",
+            ),
         )
 
     except Exception as error:
-
         print("PAYMENT IMAGE ERROR:", error)
-
         abort(404)
 
 
@@ -1240,7 +1215,7 @@ def admin_export():
         "Payment Screenshot Name",
         "Payment Screenshot Type",
         "Payment Screenshot Size",
-        "Payment Storage Path",
+        "Payment Image Storage",
         "Payment Status",
         "Registration Status",
         "Registered At",
