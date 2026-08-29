@@ -1,1 +1,124 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08101f"><title>{% block title %}Mahendra College of Engineering{% endblock %}</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"></head><body><header><div class="nav"><a class="brand" href="{{url_for('department')}}"><img src="{{url_for('static',filename='images/biomedical-logo.svg')}}"><span><b>MAHENDRA COLLEGE OF ENGINEERING</b><small>DEPARTMENT OF BIOMEDICAL ENGINEERING</small></span></a><button onclick="document.querySelector('nav').classList.toggle('open')">☰</button><nav><a href="{{url_for('department')}}">Department</a><a href="{{url_for('home')}}">B'ELITEZ 2K26</a><a href="{{url_for('events')}}">Events</a><a class="navbtn" href="{{url_for('register')}}">Register</a></nav></div></header>{% with m=get_flashed_messages(with_categories=true) %}{% if m %}<div class="flash">{{m[0][1]}}</div>{% endif %}{% endwith %}<main>{% block content %}{% endblock %}</main><footer><div><img src="{{url_for('static',filename='images/biomedical-logo.svg')}}"><b>MAHENDRA COLLEGE OF ENGINEERING</b><span>Department of Biomedical Engineering</span></div><section><a href="{{url_for('department')}}">Department</a><a href="{{url_for('events')}}">Events</a><a href="{{url_for('register')}}">Registration</a></section><small>© 2026 • B'ELITEZ 2K26</small></footer><script src="{{url_for('static',filename='js/app.js')}}"></script></body></html>
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#08101f">
+    <title>{% block title %}Mahendra College of Engineering{% endblock %}</title>
+
+    ```
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+    ```
+
+</head>
+
+<body>
+
+    ```
+    <header>
+        <div class="nav">
+
+            <a class="brand" href="{{url_for('department')}}">
+                <img src="{{url_for('static',filename='images/biomedical-logo.svg')}}">
+
+                <span>
+                    <b>MAHENDRA COLLEGE OF ENGINEERING</b>
+                    <small>DEPARTMENT OF BIOMEDICAL ENGINEERING</small>
+                </span>
+            </a>
+
+            <button onclick="document.querySelector('nav').classList.toggle('open')">
+                ☰
+            </button>
+
+            <nav>
+                <a href="{{url_for('department')}}">Department</a>
+                <a href="{{url_for('home')}}">B'ELITEZ 2K26</a>
+                <a href="{{url_for('events')}}">Events</a>
+                <a class="navbtn" href="{{url_for('register')}}">Register</a>
+            </nav>
+
+        </div>
+    </header>
+
+    {% with m=get_flashed_messages(with_categories=true) %}
+    {% if m %}
+    <div class="flash">{{m[0][1]}}</div>
+    {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-container">
+
+            <!-- College Information -->
+            <div class="footer-brand">
+                <img src="{{url_for('static',filename='images/biomedical-logo.svg')}}">
+
+                <b>MAHENDRA COLLEGE OF ENGINEERING</b>
+
+                <span>Department of Biomedical Engineering</span>
+
+                <p>
+                    B'ELITEZ 2K26<br>
+                    National Level Technical Symposium
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+
+                <a href="{{url_for('department')}}">Department</a>
+                <a href="{{url_for('home')}}">B'ELITEZ 2K26</a>
+                <a href="{{url_for('events')}}">Events</a>
+                <a href="{{url_for('register')}}">Registration</a>
+            </div>
+
+            <!-- Website Queries -->
+            <div class="footer-contact">
+
+                <h3>Website Queries</h3>
+
+                <p>
+                    For website-related queries, registration issues,
+                    payment issues, or technical support, please contact:
+                </p>
+
+                <a href="tel:7448665022" class="contact-phone">
+                    📞 9566398331 / 7448665022
+                </a>
+
+                <p class="contact-note">
+                    Available for website and registration support.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <small>
+                © 2026 B'ELITEZ 2K26 • Mahendra College of Engineering
+            </small>
+        </div>
+
+    </footer>
+
+    <script src="{{url_for('static',filename='js/app.js')}}"></script>
+    ```
+
+</body>
+
+</html>

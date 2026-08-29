@@ -1612,3 +1612,157 @@ footer>small {
     }
 
 }
+
+/* ================================
+   FOOTER
+================================ */
+
+footer {
+    background: #08101f;
+    color: #ffffff;
+    margin-top: 60px;
+    padding: 50px 25px 20px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.5fr;
+    gap: 50px;
+}
+
+/* College information */
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-brand img {
+    width: 55px;
+    height: 55px;
+    margin-bottom: 15px;
+}
+
+.footer-brand b {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.footer-brand span {
+    color: #aeb8c7;
+    font-size: 14px;
+}
+
+.footer-brand p {
+    color: #8995a8;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 15px;
+}
+
+/* Quick links */
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-links h3,
+.footer-contact h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    margin: 0 0 18px;
+}
+
+.footer-links a {
+    color: #aeb8c7;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 11px;
+    transition: 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+/* Website contact */
+
+.footer-contact p {
+    color: #aeb8c7;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 15px;
+}
+
+.contact-phone {
+    display: inline-block;
+
+    color: #ffffff;
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    padding: 10px 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+
+    transition: 0.2s ease;
+}
+
+.contact-phone:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.footer-contact .contact-note {
+    color: #718096;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+/* Bottom copyright */
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 35px auto 0;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    text-align: center;
+}
+
+.footer-bottom small {
+    color: #718096;
+    font-size: 12px;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .footer-brand,
+    .footer-links,
+    .footer-contact {
+        width: 100%;
+    }
+
+    footer {
+        padding: 40px 20px 20px;
+    }
+
+}
