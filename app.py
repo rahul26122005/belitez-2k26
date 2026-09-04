@@ -370,6 +370,11 @@ def upload_payment_screenshot(payment_file, registration_id):
 
 
 @app.route("/")
+def flutter():
+    return redirect("https://bme-belitez.web.app/")
+
+
+@app.route("/department")
 def department():
 
     return render_template("department.html")
